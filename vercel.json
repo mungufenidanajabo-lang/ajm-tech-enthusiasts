@@ -3,22 +3,7 @@
   "rewrites": [
     {
       "source": "/",
-      "destination": "/ajm-tech.html"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        }
-      ]
+      "destination": "/ajm-tech" 
     }
   ]
 }
