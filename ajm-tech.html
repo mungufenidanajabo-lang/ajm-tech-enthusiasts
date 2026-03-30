@@ -6,6 +6,24 @@
 <title>AJM-TECH | Repairs · Sales · Design · Development</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
 <style>
+  /* Hide sections by default for the 'independent' view */
+#testimonials, #faq, #services, #portfolio, #about {
+  display: none; 
+}
+
+/* Class to show the active section */
+section.active {
+  display: block !important;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ensure Hero is always visible or handled separately */
+.hero { display: flex; }
   #loader {
   position: fixed;
   inset: 0;
@@ -452,8 +470,8 @@
     <li><a href="/portfolio">Portfolio</a></li>
     <li><a href="/blog">Blog</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#testimonials">Reviews</a></li>
-    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#testimonials" class="tab-link">Reviews</a></li>
+  <li><a href="#faq" class="tab-link">FAQ</a></li>
   </ul>
   <a class="nav-cta" href="#contact">Get a Quote →</a>
   <div class="hamburger" onclick="this.classList.toggle('open')">
@@ -831,6 +849,63 @@
 </footer>
 
 <script>
+  <script>
+  const navLinks = document.querySelectorAll('.tab-link, .nav-cta, .btn-primary');
+  const sections = document.querySelectorAll('section');
+  const hero = document.querySelector('.hero');
+  const stats = document.querySelector('.stats-bar');
+
+  function showSection(id) {
+    const targetId = id.replace('#', '');
+    
+    // 1. Hide all main sections
+    sections.forEach(sec => sec.classList.remove('active'));
+    
+    // 2. Handle Hero and Stats visibility
+    // If we go "Home" (logo click) or if no specific section is active
+    if (targetId === '' || targetId === 'hero') {
+      hero.style.display = 'flex';
+      stats.style.display = 'block';
+    } else {
+      // Hide Hero/Stats when viewing specific tabs like FAQ or Reviews
+      hero.style.display = 'none';
+      stats.style.display = 'none';
+      
+      // 3. Show the target section
+      const targetSection = document.getElementById(targetId);
+      if (targetSection) {
+        targetSection.classList.add('active');
+        window.scrollTo(0, 0); // Scroll to top of the new view
+      }
+    }
+  }
+
+  // Event Listeners for Nav
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (href.startsWith('#')) {
+        e.preventDefault();
+        showSection(href);
+      }
+    });
+  });
+
+  // Handle Logo click to reset
+  document.querySelector('.logo').addEventListener('click', (e) => {
+    e.preventDefault();
+    sections.forEach(sec => sec.classList.remove('active'));
+    hero.style.display = 'flex';
+    stats.style.display = 'block';
+  });
+
+  // Re-run your intersection observer logic for the newly visible section
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
   window.addEventListener("load", () => {
   const loader = document.getElementById("loader");
   // Small timeout for a smoother visual transition
