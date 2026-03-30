@@ -6,6 +6,46 @@
 <title>AJM-TECH | Repairs · Sales · Design · Development</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
 <style>
+  #loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease, visibility 0.5s;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--surface2);
+  border-top: 3px solid var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+#loader p {
+  font-family: var(--heading);
+  letter-spacing: 2px;
+  font-weight: 700;
+  color: var(--text);
+  font-size: 0.8rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Class to hide the loader */
+.loader-hidden {
+  opacity: 0;
+  visibility: hidden;
+}
   :root {
     --bg: #080c10;
     --surface: #0e1318;
@@ -399,7 +439,10 @@
 </style>
 </head>
 <body>
-
+<div id="loader">
+  <div class="spinner"></div>
+  <p>AJM-TECH</p>
+</div>
 <!-- NAV -->
 <nav>
   <a class="logo" href="#"><span>AJM</span>-TECH</a>
@@ -786,6 +829,13 @@
 </footer>
 
 <script>
+  window.addEventListener("load", () => {
+  const loader = document.getElementById("loader");
+  // Small timeout for a smoother visual transition
+  setTimeout(() => {
+    loader.classList.add("loader-hidden");
+  }, 500);
+});
   // Scroll reveal
   const reveals = document.querySelectorAll('.reveal');
   const obs = new IntersectionObserver((entries) => {
