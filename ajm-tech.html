@@ -844,37 +844,6 @@ section.active {
 </footer>
 
 <script>
-  <script>
-  const navLinks = document.querySelectorAll('.tab-link, .nav-cta, .btn-primary');
-  const sections = document.querySelectorAll('section');
-  const hero = document.querySelector('.hero');
-  const stats = document.querySelector('.stats-bar');
-
-  function showSection(id) {
-    const targetId = id.replace('#', '');
-    
-    // 1. Hide all main sections
-    sections.forEach(sec => sec.classList.remove('active'));
-    
-    // 2. Handle Hero and Stats visibility
-    // If we go "Home" (logo click) or if no specific section is active
-    if (targetId === '' || targetId === 'hero') {
-      hero.style.display = 'flex';
-      stats.style.display = 'block';
-    } else {
-      // Hide Hero/Stats when viewing specific tabs like FAQ or Reviews
-      hero.style.display = 'none';
-      stats.style.display = 'none';
-      
-      // 3. Show the target section
-      const targetSection = document.getElementById(targetId);
-      if (targetSection) {
-        targetSection.classList.add('active');
-        window.scrollTo(0, 0); // Scroll to top of the new view
-      }
-    }
-  }
-
   // Event Listeners for Nav
   navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
