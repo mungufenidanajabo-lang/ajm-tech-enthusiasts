@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FAQs | AJM-TECH</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --bg:#080c10;--surface:#0e1318;--surface2:#131920;--border:#1e2a34;
+    --accent:#00d4ff;--accent2:#ff6b35;--accent3:#7cff6b;
+    --text:#e8edf2;--muted:#6b7c8d;
+    --heading:'Syne',sans-serif;--body:'DM Sans',sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.6;overflow-x:hidden}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 5vw;background:rgba(8,12,16,.85);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+  .logo{font-family:var(--heading);font-size:1.5rem;font-weight:800;letter-spacing:-.03em;color:var(--text);text-decoration:none}
+  .logo span{color:var(--accent)}
+  .nav-links{display:flex;gap:2rem;list-style:none}
+  .nav-links a{font-size:.9rem;font-weight:500;color:var(--muted);text-decoration:none;transition:color .2s;letter-spacing:.02em}
+  .nav-links a:hover{color:var(--text)}
+  .nav-links a.active{color:var(--accent)}
+  .nav-cta{background:var(--accent);color:#000;font-family:var(--heading);font-weight:700;font-size:.85rem;letter-spacing:.05em;padding:.55rem 1.4rem;border-radius:4px;text-decoration:none;transition:opacity .2s}
+  .nav-cta:hover{opacity:.85}
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+  .hamburger span{width:24px;height:2px;background:var(--text);display:block}
+
+  /* PAGE HERO */
+  .page-hero{position:relative;padding:9rem 5vw 5rem;overflow:hidden;border-bottom:1px solid var(--border);text-align:center}
+  .ph-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(0,212,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.03) 1px,transparent 1px);background-size:48px 48px}
+  .ph-glow{position:absolute;width:700px;height:500px;top:-200px;left:50%;transform:translateX(-50%);border-radius:50%;filter:blur(130px);background:radial-gradient(circle,rgba(0,212,255,.14) 0%,transparent 70%);z-index:0}
+  .ph-content{position:relative;z-index:1;max-width:650px;margin:0 auto}
+  .page-label{display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.22);color:var(--accent);font-size:.78rem;font-weight:600;padding:.35rem .9rem;border-radius:999px;margin-bottom:1.5rem;letter-spacing:.08em;text-transform:uppercase}
+  .page-hero h1{font-family:var(--heading);font-size:clamp(2.2rem,5vw,4rem);font-weight:800;letter-spacing:-.03em;line-height:1.08;margin-bottom:1rem}
+  .page-hero h1 em{font-style:normal;color:var(--accent)}
+  .page-hero p{color:var(--muted);font-size:1.05rem;line-height:1.7;max-width:500px;margin:0 auto 2rem}
+
+  /* SEARCH */
+  .faq-search-wrap{max-width:480px;margin:0 auto;position:relative}
+  .faq-search-wrap input{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:var(--body);font-size:.95rem;padding:.85rem 1.2rem .85rem 3rem;border-radius:8px;outline:none;transition:border-color .2s}
+  .faq-search-wrap input:focus{border-color:var(--accent)}
+  .faq-search-wrap input::placeholder{color:var(--muted)}
+  .search-icon{position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+
+  /* QUICK LINKS */
+  .quick-links{padding:2rem 5vw;background:var(--surface);border-bottom:1px solid var(--border);display:flex;justify-content:center;gap:.6rem;flex-wrap:wrap}
+  .ql-btn{font-size:.82rem;font-weight:600;padding:.45rem 1.2rem;border-radius:999px;border:1px solid var(--border);color:var(--muted);background:transparent;cursor:pointer;transition:all .2s;font-family:var(--body);text-decoration:none;display:inline-block}
+  .ql-btn:hover,.ql-btn.active{background:var(--accent);color:#000;border-color:var(--accent)}
+
+  /* FAQ LAYOUT */
+  .faq-layout{padding:5rem 5vw;display:grid;grid-template-columns:280px 1fr;gap:4rem;align-items:start;max-width:1200px;margin:0 auto}
+  .faq-nav{position:sticky;top:90px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem}
+  .fn-title{font-family:var(--heading);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:1.2rem}
+  .fn-links{list-style:none;display:flex;flex-direction:column;gap:.2rem}
+  .fn-links a{display:flex;align-items:center;gap:.7rem;padding:.65rem .8rem;border-radius:7px;font-size:.88rem;color:var(--muted);text-decoration:none;transition:all .2s;border:1px solid transparent}
+  .fn-links a:hover,.fn-links a.active{background:rgba(0,212,255,.08);color:var(--accent);border-color:rgba(0,212,255,.2)}
+  .fn-links a .fn-icon{font-size:1rem;width:24px;text-align:center}
+  .fn-count{margin-left:auto;background:var(--surface2);font-size:.72rem;padding:.15rem .5rem;border-radius:4px;font-weight:700}
+
+  /* FAQ GROUPS */
+  .faq-groups{display:flex;flex-direction:column;gap:3rem}
+  .faq-group-title{display:flex;align-items:center;gap:.8rem;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+  .fgt-icon{font-size:1.4rem}
+  .fgt-text{font-family:var(--heading);font-size:1.2rem;font-weight:800}
+  .fgt-count{font-size:.75rem;color:var(--muted);background:var(--surface);padding:.25rem .65rem;border-radius:4px;margin-left:auto;border:1px solid var(--border)}
+
+  /* ACCORDION */
+  .faq-item{border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:.8rem;transition:border-color .25s}
+  .faq-item:hover{border-color:rgba(0,212,255,.3)}
+  details.faq-item[open]{border-color:var(--accent)}
+  .faq-q{display:flex;align-items:center;gap:1rem;padding:1.2rem 1.4rem;cursor:pointer;list-style:none;font-family:var(--heading);font-weight:700;font-size:.97rem;background:var(--surface);transition:background .2s}
+  .faq-q::-webkit-details-marker{display:none}
+  details[open] .faq-q{background:rgba(0,212,255,.05)}
+  .faq-q .q-icon{width:32px;height:32px;border-radius:7px;background:rgba(0,212,255,.1);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+  .faq-q .q-arrow{margin-left:auto;font-size:1.2rem;color:var(--accent);transition:transform .3s;flex-shrink:0}
+  details[open] .faq-q .q-arrow{transform:rotate(45deg)}
+  .faq-a{padding:1.2rem 1.4rem 1.4rem 1.4rem;font-size:.91rem;color:var(--muted);line-height:1.75;background:var(--surface);border-top:1px solid var(--border)}
+  .faq-a p{margin-bottom:.8rem}
+  .faq-a p:last-child{margin-bottom:0}
+  .faq-a ul{padding-left:1.2rem;margin-top:.5rem;display:flex;flex-direction:column;gap:.4rem}
+  .faq-a a{color:var(--accent);text-decoration:none}
+  .faq-a a:hover{text-decoration:underline}
+  .answer-badge{display:inline-flex;align-items:center;gap:.4rem;background:rgba(124,255,107,.1);color:var(--accent3);border:1px solid rgba(124,255,107,.2);font-size:.75rem;font-weight:600;padding:.3rem .75rem;border-radius:4px;margin-top:.8rem}
+
+  /* CONTACT PROMPT */
+  .still-stuck{background:linear-gradient(135deg,rgba(0,212,255,.07),rgba(255,107,53,.05));border:1px solid rgba(0,212,255,.18);border-radius:14px;padding:2.5rem;text-align:center;margin-top:2rem}
+  .ss-icon{font-size:2.5rem;margin-bottom:1rem}
+  .still-stuck h3{font-family:var(--heading);font-size:1.2rem;font-weight:800;margin-bottom:.6rem}
+  .still-stuck p{color:var(--muted);font-size:.9rem;line-height:1.7;margin-bottom:1.5rem;max-width:380px;margin-left:auto;margin-right:auto}
+  .ss-btns{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}
+  .btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#000;font-family:var(--heading);font-weight:700;font-size:.9rem;padding:.8rem 1.8rem;border-radius:5px;text-decoration:none;transition:transform .2s,box-shadow .2s;box-shadow:0 0 30px rgba(0,212,255,.3)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(0,212,255,.5)}
+  .btn-ghost{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--text);border:1px solid var(--border);font-family:var(--heading);font-weight:600;font-size:.9rem;padding:.8rem 1.8rem;border-radius:5px;text-decoration:none;transition:border-color .2s,color .2s}
+  .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* NO RESULTS */
+  .no-results{display:none;text-align:center;padding:4rem 2rem;color:var(--muted)}
+  .no-results.show{display:block}
+  .no-results .nr-icon{font-size:3rem;margin-bottom:1rem}
+
+  /* FOOTER */
+  footer{background:var(--surface);border-top:1px solid var(--border);padding:4rem 5vw 2rem}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+  .footer-brand p{color:var(--muted);font-size:.88rem;line-height:1.7;margin:1rem 0;max-width:280px}
+  .footer-socials{display:flex;gap:.8rem}
+  .social-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.85rem;text-decoration:none;color:var(--muted);transition:all .2s}
+  .social-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .footer-col h5{font-family:var(--heading);font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:1.2rem}
+  .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+  .footer-col a{font-size:.88rem;color:var(--muted);text-decoration:none;transition:color .2s}
+  .footer-col a:hover{color:var(--text)}
+  .footer-bottom{border-top:1px solid var(--border);padding-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:.82rem;color:var(--muted)}
+  .footer-bottom a{color:var(--accent);text-decoration:none}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.visible{opacity:1;transform:none}
+
+  @media(max-width:900px){
+    .faq-layout{grid-template-columns:1fr}
+    .faq-nav{display:none}
+    .footer-grid{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:600px){
+    .nav-links,.nav-cta{display:none}
+    .hamburger{display:flex}
+    .footer-grid{grid-template-columns:1fr}
+    .footer-bottom{flex-direction:column;text-align:center}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="ajm-tech.html"><span>AJM</span>-TECH</a>
+  <ul class="nav-links">
+    <li><a href="ajm-tech.html#services">Services</a></li>
+    <li><a href="portfolio.html">Portfolio</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="faqs.html" class="active">FAQs</a></li>
+    <li><a href="reviews.html">Reviews</a></li>
+    <li><a href="ajm-tech.html#contact">Contact</a></li>
+  </ul>
+  <a class="nav-cta" href="ajm-tech.html#contact">Get a Quote →</a>
+  <div class="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="ph-bg"></div>
+  <div class="ph-glow"></div>
+  <div class="ph-content">
+    <div class="page-label">❓ Help Centre</div>
+    <h1>Frequently Asked<br><em>Questions</em></h1>
+    <p>Everything you need to know about our services. Can't find an answer? We're always a message away.</p>
+    <div class="faq-search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="faqSearch" placeholder="Search questions… e.g. 'battery', 'website cost'"/>
+    </div>
+  </div>
+</div>
+
+<!-- QUICK LINKS -->
+<div class="quick-links">
+  <a class="ql-btn active" href="#repairs">🔧 Repairs</a>
+  <a class="ql-btn" href="#sales">🛒 Sales</a>
+  <a class="ql-btn" href="#design">🎨 Design</a>
+  <a class="ql-btn" href="#web">💻 Web Dev</a>
+  <a class="ql-btn" href="#apps">📱 Apps</a>
+  <a class="ql-btn" href="#it">🖥️ IT &amp; CCTV</a>
+  <a class="ql-btn" href="#pricing">💰 Pricing</a>
+  <a class="ql-btn" href="#general">ℹ️ General</a>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="faq-layout">
+
+  <!-- STICKY NAV -->
+  <aside class="faq-nav">
+    <div class="fn-title">Jump to Section</div>
+    <ul class="fn-links">
+      <li><a href="#repairs"><span class="fn-icon">🔧</span> Repairs <span class="fn-count">6</span></a></li>
+      <li><a href="#sales"><span class="fn-icon">🛒</span> Sales <span class="fn-count">4</span></a></li>
+      <li><a href="#design"><span class="fn-icon">🎨</span> Design <span class="fn-count">5</span></a></li>
+      <li><a href="#web"><span class="fn-icon">💻</span> Web Dev <span class="fn-count">5</span></a></li>
+      <li><a href="#apps"><span class="fn-icon">📱</span> Apps <span class="fn-count">4</span></a></li>
+      <li><a href="#it"><span class="fn-icon">🖥️</span> IT &amp; CCTV <span class="fn-count">4</span></a></li>
+      <li><a href="#pricing"><span class="fn-icon">💰</span> Pricing <span class="fn-count">4</span></a></li>
+      <li><a href="#general"><span class="fn-icon">ℹ️</span> General <span class="fn-count">4</span></a></li>
+    </ul>
+  </aside>
+
+  <!-- FAQ GROUPS -->
+  <div class="faq-groups" id="faqGroups">
+
+    <!-- REPAIRS -->
+    <div class="faq-group reveal" id="repairs">
+      <div class="faq-group-title">
+        <span class="fgt-icon">🔧</span>
+        <span class="fgt-text">Repairs</span>
+        <span class="fgt-count">6 questions</span>
+      </div>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">⏱️</span>How long does a typical repair take?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>Turnaround depends on the repair type:</p>
+          <ul>
+            <li><strong>Screen replacement</strong> — 1–2 hours</li>
+            <li><strong>Battery replacement</strong> — 30–60 minutes</li>
+            <li><strong>Charging port / headphone jack</strong> — 1–2 hours</li>
+            <li><strong>Water damage treatment</strong> — 24–48 hours (drying + diagnostics)</li>
+            <li><strong>Motherboard / logic board repair</strong> — 2–5 business days</li>
+            <li><strong>Laptop screen / keyboard</strong> — 1–3 hours (parts in stock) or 1–3 days (if order needed)</li>
+          </ul>
+          <p>We always give you an honest timeline at drop-off and will call or WhatsApp you the moment your device is ready.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">🛡️</span>Do you offer a warranty on repairs?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>Yes — all hardware repairs carry a <strong>30-day warranty</strong> covering both parts and labour. If the exact same fault returns within that window, we fix it at no extra cost.</p>
+          <p>Note: the warranty does not cover new physical damage (drops, liquid exposure) that occurs after the repair.</p>
+          <span class="answer-badge">✔ 30-Day Warranty Included</span>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">💧</span>What should I do if my phone got wet?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p><strong>Do immediately:</strong></p>
+          <ul>
+            <li>Power it off — do NOT try to turn it on</li>
+            <li>Remove SIM card, memory card, and case</li>
+            <li>Gently pat dry with a soft cloth</li>
+            <li>Bring it to us as fast as possible — every hour matters</li>
+          </ul>
+          <p><strong>Do NOT:</strong> put it in rice (ineffective), use a hairdryer, charge it, or press any buttons repeatedly.</p>
+          <p>Our technicians will open it, clean the board with isopropyl alcohol, and assess component damage. The sooner you come in, the better the recovery odds.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">🔩</span>Do you use genuine / original parts?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>We use the best available parts for every job and are transparent about it:</p>
+          <ul>
+            <li><strong>OEM (Original Equipment Manufacturer)</strong> parts — used wherever available, especially for Apple and Samsung screens</li>
+            <li><strong>High-quality aftermarket</strong> — used when OEM is unavailable or when the client prefers a lower cost option; always disclosed upfront</li>
+          </ul>
+          <p>We will never install a cheap knock-off part without telling you. You choose what goes into your device.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">📊</span>Can you recover data from a damaged device?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>In many cases, yes. We offer data recovery services for:</p>
+          <ul>
+            <li>Phones with broken screens (data extracted to a new phone or drive)</li>
+            <li>Water-damaged devices</li>
+            <li>Laptops with failed hard drives or SSDs</li>
+            <li>Devices that won't power on</li>
+          </ul>
+          <p>Success rate depends on the extent of damage. We run a free initial diagnostic and give you an honest assessment before you commit to anything.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">💰</span>How much does a repair cost?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>Pricing varies by device and fault. Rough guides:</p>
+          <ul>
+            <li>Phone screen (Samsung/Tecno/Infinix) — <strong>UGX 40,000 – 180,000</strong></li>
+            <li>iPhone screen — <strong>UGX 150,000 – 450,000</strong></li>
+            <li>Laptop screen — <strong>UGX 120,000 – 350,000</strong></li>
+            <li>Battery (phone) — <strong>UGX 35,000 – 85,000</strong></li>
+            <li>Charging port — <strong>UGX 25,000 – 70,000</strong></li>
+          </ul>
+          <p>All quotes are given <strong>free of charge</strong> before any work begins. Walk in or WhatsApp us a description of the fault.</p>
+          <a href="ajm-tech.html#contact">Get a free quote →</a>
+        </div>
+      </details>
+    </div>
+
+    <!-- SALES -->
+    <div class="faq-group reveal" id="sales">
+      <div class="faq-group-title">
+        <span class="fgt-icon">🛒</span>
+        <span class="fgt-text">Tech Sales</span>
+        <span class="fgt-count">4 questions</span>
+      </div>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">📦</span>What products do you sell?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>We stock a wide range of technology products, including:</p>
+          <ul>
+            <li>Smartphones (Samsung, Tecno, Infinix, iPhone, Xiaomi)</li>
+            <li>Laptops and desktops</li>
+            <li>Accessories: chargers, cables, power banks, earphones, cases</li>
+            <li>Printer ink and toner cartridges</li>
+            <li>Networking equipment (routers, switches, cables)</li>
+            <li>CCTV cameras and accessories</li>
+          </ul>
+          <p>Stock varies — WhatsApp us to confirm availability on a specific item.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">🔄</span>Do you sell refurbished devices?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>Yes. We sell certified refurbished phones and laptops that have been inspected, repaired where necessary, and tested by our technicians. Every refurbished device is clearly labelled and comes with a <strong>14-day exchange warranty</strong>.</p>
+          <p>Refurbished devices are a great way to get quality hardware at 30–50% below new prices.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">🚚</span>Can you deliver products to me?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>Yes — we offer delivery within Kampala and its suburbs. Delivery fees depend on your location. For orders outside Kampala, we work with trusted couriers.</p>
+          <p>Contact us on WhatsApp to arrange delivery. Payment on delivery is available for verified repeat clients; new orders require 50% upfront.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">↩️</span>What is your return / exchange policy?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>New products: <strong>7-day exchange</strong> for manufacturing defects. Items must be in original, unactivated condition with all accessories.</p>
+          <p>Refurbished products: <strong>14-day exchange</strong> for any faults present at the time of sale.</p>
+          <p>We do not accept returns for change of mind once a device has been activated or used. All sales of accessories (cables, cases, earphones) are final once opened.</p>
+        </div>
+      </details>
+    </div>
+
+    <!-- DESIGN -->
+    <div class="faq-group reveal" id="design">
+      <div class="faq-group-title">
+        <span class="fgt-icon">🎨</span>
+        <span class="fgt-text">Graphics Design</span>
+        <span class="fgt-count">5 questions</span>
+      </div>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">🖼️</span>What design services do you offer?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <ul>
+            <li>Logo design and brand identity systems</li>
+            <li>Business cards, letterheads, and stationery</li>
+            <li>Social media post templates and kits</li>
+            <li>Flyers, banners, and posters (print and digital)</li>
+            <li>Product packaging and labels</li>
+            <li>Pitch deck and presentation design</li>
+            <li>Brand style guides</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">📁</span>What file formats will I receive?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>For logo and brand identity projects you receive:</p>
+          <ul>
+            <li><strong>AI / EPS</strong> — editable vector source files</li>
+            <li><strong>SVG</strong> — web-ready vector</li>
+            <li><strong>PNG</strong> — transparent background, multiple sizes</li>
+            <li><strong>PDF</strong> — print-ready</li>
+            <li><strong>JPG</strong> — general use</li>
+          </ul>
+          <p>Print-ready artwork is delivered at 300 DPI minimum. Social media assets are delivered in platform-optimised dimensions.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">🔁</span>How many revision rounds do I get?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>All design packages include <strong>3 rounds of revisions</strong> at no extra cost. A "revision round" means you send consolidated feedback and we make all requested changes in one go.</p>
+          <p>Additional rounds beyond 3 are billed at a small hourly rate. In practice, most projects are resolved in 1–2 rounds when clients provide clear, detailed briefs upfront.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">⏳</span>How long does a logo design project take?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>Typical timelines from brief to final delivery:</p>
+          <ul>
+            <li><strong>Logo only</strong> — 3–5 business days</li>
+            <li><strong>Logo + brand identity kit</strong> — 7–10 business days</li>
+            <li><strong>Full branding + website design</strong> — 2–4 weeks</li>
+          </ul>
+          <p>Rush delivery (50% faster) is available for an additional fee — ask us if you have a deadline.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">©️</span>Do I own the final design?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>Yes — upon final payment, full ownership and copyright of all delivered files transfers to you. You can use them commercially, modify them, or hand them to another designer in future without restriction.</p>
+          <p>AJM-TECH retains the right to display the work in our portfolio unless you request otherwise in writing.</p>
+          <span class="answer-badge">✔ You Own 100% of the Final Work</span>
+        </div>
+      </details>
+    </div>
+
+    <!-- WEB DEV -->
+    <div class="faq-group reveal" id="web">
+      <div class="faq-group-title">
+        <span class="fgt-icon">💻</span>
+        <span class="fgt-text">Web Development</span>
+        <span class="fgt-count">5 questions</span>
+      </div>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">💵</span>How much does a website cost?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>Pricing depends on scope, complexity, and features required. Rough ranges:</p>
+          <ul>
+            <li><strong>Basic landing page (1–3 pages)</strong> — from UGX 500,000</li>
+            <li><strong>Business website (5–10 pages)</strong> — UGX 1,200,000 – 2,500,000</li>
+            <li><strong>E-commerce store</strong> — UGX 2,500,000 – 6,000,000+</li>
+            <li><strong>Custom web application / portal</strong> — quoted on scope</li>
+          </ul>
+          <p>Hosting, domain registration, and maintenance are separate. We give free, no-obligation quotes — just <a href="ajm-tech.html#contact">contact us</a> with your requirements.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">🛠️</span>What technologies do you build with?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>We choose the right tool for the right job. Our core stack includes:</p>
+          <ul>
+            <li><strong>Frontend:</strong> React, Next.js, Vue.js, plain HTML/CSS/JS</li>
+            <li><strong>Backend:</strong> Node.js, Laravel (PHP), Python (Django/Flask)</li>
+            <li><strong>Databases:</strong> MySQL, PostgreSQL, MongoDB, Firebase</li>
+            <li><strong>CMS:</strong> WordPress, Strapi, Sanity</li>
+            <li><strong>Payments:</strong> MTN MoMo, Airtel Money, Stripe, Flutterwave</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">📱</span>Will my website work on mobile?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>Absolutely — <strong>every website we build is mobile-first by default</strong>. Given that 80%+ of Uganda's internet traffic comes from smartphones, we don't treat mobile as an afterthought.</p>
+          <p>We test across multiple real devices and screen sizes before delivery. We also optimise for slow/3G connections common in parts of Uganda.</p>
+          <span class="answer-badge">✔ Mobile-First, Always</span>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">🔒</span>Will you handle hosting and security?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>Yes. We offer managed hosting packages that include:</p>
+          <ul>
+            <li>SSL certificate (HTTPS) installation and renewal</li>
+            <li>Daily automated backups</li>
+            <li>Malware scanning and firewall configuration</li>
+            <li>Uptime monitoring</li>
+            <li>Software/plugin updates</li>
+          </ul>
+          <p>You can also host elsewhere — we'll set it up for you on any platform you prefer.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">🎓</span>Can I update the website myself after launch?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>Yes. For CMS-based sites (WordPress, Strapi), we include a training session so you can add blog posts, update prices, change images, and manage products yourself with no technical knowledge needed.</p>
+          <p>For custom-coded applications, we provide documentation and offer a monthly support retainer for ongoing changes and additions.</p>
+        </div>
+      </details>
+    </div>
+
+    <!-- APPS -->
+    <div class="faq-group reveal" id="apps">
+      <div class="faq-group-title">
+        <span class="fgt-icon">📱</span>
+        <span class="fgt-text">Mobile App Development</span>
+        <span class="fgt-count">4 questions</span>
+      </div>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">🤔</span>Android, iOS, or both — which do you build?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>We build for both, and typically recommend <strong>cross-platform development</strong> using Flutter or React Native — one codebase that runs natively on both Android and iOS. This cuts cost and time significantly without sacrificing performance.</p>
+          <p>For projects that specifically need native iOS (Swift) or native Android (Kotlin), we handle those too.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">📊</span>How long does it take to build an app?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <ul>
+            <li><strong>Simple MVP (basic features)</strong> — 6–10 weeks</li>
+            <li><strong>Mid-complexity app</strong> — 3–5 months</li>
+            <li><strong>Complex app (multi-role, real-time, payments)</strong> — 5–9 months</li>
+          </ul>
+          <p>We recommend starting with an MVP to validate your idea quickly, then adding features in subsequent phases.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">🏪</span>Will you publish the app to the Play Store / App Store?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>Yes — app store submission is included in all our mobile app packages. We handle:</p>
+          <ul>
+            <li>Google Play Store listing (screenshots, description, keywords)</li>
+            <li>Apple App Store submission and review management</li>
+            <li>All required assets (icons, splash screens)</li>
+          </ul>
+          <p>You will need a Google Play developer account (one-time $25 fee) and/or an Apple Developer account ($99/year), both registered in your name.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">🔄</span>Do you provide post-launch support?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>All app projects come with <strong>60 days of free post-launch support</strong> covering bug fixes and minor adjustments. After that, we offer flexible monthly maintenance retainers for:</p>
+          <ul>
+            <li>OS update compatibility (Android/iOS new versions)</li>
+            <li>Bug fixes and performance improvements</li>
+            <li>Feature additions and updates</li>
+            <li>Server/backend monitoring</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <!-- IT & CCTV -->
+    <div class="faq-group reveal" id="it">
+      <div class="faq-group-title">
+        <span class="fgt-icon">🖥️</span>
+        <span class="fgt-text">IT Support &amp; CCTV</span>
+        <span class="fgt-count">4 questions</span>
+      </div>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">🌐</span>What does your IT support cover?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <ul>
+            <li>Network design, installation, and troubleshooting (LAN/Wi-Fi)</li>
+            <li>Server setup and management (Windows Server, Linux)</li>
+            <li>Computer lab setup for schools and training centres</li>
+            <li>Remote helpdesk for businesses</li>
+            <li>Email setup (Gmail Workspace, Microsoft 365)</li>
+            <li>Antivirus deployment and security audits</li>
+            <li>Scheduled preventive maintenance visits</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">📹</span>What CCTV brands do you install?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>We primarily install <strong>Hikvision</strong> and <strong>Dahua</strong> — both internationally trusted brands with excellent local support. For budget installs, we offer quality alternatives like Reolink and TP-Link Tapo.</p>
+          <p>All installations include NVR/DVR setup, cable routing (hidden where possible), remote mobile viewing configuration, and a full walkthrough for the client.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">📍</span>Do you serve clients outside Kampala?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>Yes. For IT and CCTV installations, we travel to locations across Uganda. Travel costs are factored into the project quote.</p>
+          <p>Remote IT support (helpdesk, server management, troubleshooting) is available nationwide and internationally via secure remote access tools.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">📋</span>Do you offer support contracts for businesses?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>Yes — we offer <strong>monthly and annual IT support contracts</strong>, ideal for SMEs, schools, and NGOs. Contracts include:</p>
+          <ul>
+            <li>Defined number of on-site visits per month</li>
+            <li>Unlimited remote helpdesk support</li>
+            <li>Priority response times (within 4 hours for critical issues)</li>
+            <li>Quarterly network and security audits</li>
+          </ul>
+          <p>Annual contracts receive a 15% discount compared to monthly billing. <a href="ajm-tech.html#contact">Request a quote →</a></p>
+        </div>
+      </details>
+    </div>
+
+    <!-- PRICING -->
+    <div class="faq-group reveal" id="pricing">
+      <div class="faq-group-title">
+        <span class="fgt-icon">💰</span>
+        <span class="fgt-text">Pricing &amp; Payment</span>
+        <span class="fgt-count">4 questions</span>
+      </div>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">💳</span>What payment methods do you accept?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <ul>
+            <li><strong>Mobile money:</strong> MTN MoMo, Airtel Money</li>
+            <li><strong>Cash</strong> at our Kampala office</li>
+            <li><strong>Bank transfer</strong> (for corporate/large projects)</li>
+            <li><strong>Installment plans</strong> available for projects over UGX 2,000,000 (50% upfront, 50% on delivery)</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">📑</span>Do you provide invoices and receipts?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>Yes — we issue professional invoices before work begins and official receipts upon payment for every transaction, whether UGX 10,000 or UGX 10,000,000.</p>
+          <p>For corporate clients and NGOs that require LPO (Local Purchase Order) processing, we accommodate that workflow.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">🆓</span>Is the initial consultation free?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>Yes — <strong>all consultations and quotes are completely free</strong>. This includes:</p>
+          <ul>
+            <li>Device diagnostics (we'll tell you what's wrong at no charge)</li>
+            <li>Project scoping for websites, apps, or IT infrastructure</li>
+            <li>Design briefs and creative consultations</li>
+          </ul>
+          <p>You only pay when you decide to proceed with the work.</p>
+          <span class="answer-badge">✔ Free Quotes, Always</span>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">🔃</span>What if I'm not happy with the result?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>Client satisfaction is our top priority. If you're not happy:</p>
+          <ul>
+            <li><strong>Repairs:</strong> covered under warranty — we'll fix it</li>
+            <li><strong>Design:</strong> we'll revise until you're satisfied within the agreed revision rounds</li>
+            <li><strong>Development:</strong> we test against an agreed specification — if something doesn't meet it, we fix it at no charge</li>
+          </ul>
+          <p>We've maintained a 98% satisfaction rate by communicating clearly at every stage. Issues almost always arise from unclear briefs — which is why we invest heavily in the discovery phase.</p>
+        </div>
+      </details>
+    </div>
+
+    <!-- GENERAL -->
+    <div class="faq-group reveal" id="general">
+      <div class="faq-group-title">
+        <span class="fgt-icon">ℹ️</span>
+        <span class="fgt-text">General</span>
+        <span class="fgt-count">4 questions</span>
+      </div>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">📍</span>Where are you located?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>We're based in <strong>Kampala, Uganda</strong>. Our main service bay and studio is open Monday to Saturday, 8:00am – 7:00pm.</p>
+          <p>WhatsApp us at <a href="https://wa.me/256700000000">+256 700 000 000</a> for the exact address or to arrange a meeting.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">🕐</span>What are your working hours?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <ul>
+            <li><strong>Monday – Friday:</strong> 8:00am – 7:00pm</li>
+            <li><strong>Saturday:</strong> 9:00am – 5:00pm</li>
+            <li><strong>Sunday:</strong> Closed (emergency WhatsApp support available)</li>
+          </ul>
+          <p>For urgent repairs or project deadlines, we occasionally work outside these hours — reach out and we'll do our best.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">🤝</span>Can we work together remotely?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>Absolutely. Design, web development, app development, and remote IT support are all delivered fully remotely. We work with clients across Uganda and beyond via WhatsApp, email, Zoom, and Google Meet.</p>
+          <p>Only on-site services (CCTV installation, physical repairs, hardware setup) require us to come to you — and we do travel.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q"><span class="q-icon">📢</span>How do I get started?<span class="q-arrow">+</span></summary>
+        <div class="faq-a">
+          <p>Easy — just reach out:</p>
+          <ul>
+            <li><strong>Walk in</strong> to our Kampala office during business hours</li>
+            <li><strong>WhatsApp us</strong> at <a href="https://wa.me/256700000000">+256 700 000 000</a></li>
+            <li><strong>Call us</strong> at <a href="tel:+256700000000">+256 700 000 000</a></li>
+            <li><strong>Email us</strong> at <a href="mailto:info@ajm-tech.ug">info@ajm-tech.ug</a></li>
+            <li><a href="ajm-tech.html#contact">Fill in our contact form →</a></li>
+          </ul>
+          <p>We typically respond within 1–2 hours during business hours.</p>
+          <span class="answer-badge">✔ Response Within 2 Hours</span>
+        </div>
+      </details>
+    </div>
+
+    <!-- NO RESULTS -->
+    <div class="no-results" id="noResults">
+      <div class="nr-icon">🔍</div>
+      <h3 style="font-family:var(--heading);font-weight:800;margin-bottom:.5rem">No results found</h3>
+      <p style="color:var(--muted)">Try a different keyword, or ask us directly.</p>
+      <a href="ajm-tech.html#contact" class="btn-primary" style="margin-top:1.5rem;display:inline-flex">Contact Us →</a>
+    </div>
+
+    <!-- STILL STUCK -->
+    <div class="still-stuck reveal">
+      <div class="ss-icon">💬</div>
+      <h3>Still have a question?</h3>
+      <p>Our team responds within 2 hours during business hours. We're always happy to help.</p>
+      <div class="ss-btns">
+        <a class="btn-primary" href="https://wa.me/256700000000" target="_blank">💬 WhatsApp Us</a>
+        <a class="btn-ghost" href="ajm-tech.html#contact">✉️ Send a Message</a>
+      </div>
+    </div>
+
+  </div><!-- /faq-groups -->
+</div><!-- /faq-layout -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a class="logo" href="ajm-tech.html"><span>AJM</span>-TECH</a>
+      <p>Uganda's trusted technology partner for repairs, sales, design, and development.</p>
+      <div class="footer-socials">
+        <a class="social-btn" href="#">f</a><a class="social-btn" href="#">ig</a>
+        <a class="social-btn" href="#">w</a><a class="social-btn" href="#">𝕏</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Services</h5>
+      <ul>
+        <li><a href="#">Tech Repairs</a></li><li><a href="#">Tech Sales</a></li>
+        <li><a href="#">Graphics Design</a></li><li><a href="#">Web Development</a></li>
+        <li><a href="#">App Development</a></li><li><a href="#">IT Support</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="about.html">About Us</a></li><li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="blog.html">Blog</a></li><li><a href="faqs.html">FAQs</a></li>
+        <li><a href="reviews.html">Reviews</a></li><li><a href="ajm-tech.html#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <ul>
+        <li><a href="#">📍 Kampala, Uganda</a></li>
+        <li><a href="tel:+256700000000">📞 +256 700 000 000</a></li>
+        <li><a href="mailto:info@ajm-tech.ug">✉️ info@ajm-tech.ug</a></li>
+        <li><a href="#">⏰ Mon–Sat, 8am–7pm</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 AJM-TECH. All rights reserved.</span>
+    <span>Designed &amp; Built by <a href="#">AJM-TECH</a></span>
+    <span><a href="#">Privacy Policy</a> · <a href="#">Terms</a></span>
+  </div>
+</footer>
+
+<script>
+  // Reveal
+  const obs = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')}),{threshold:.08});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=`${(i%4)*.1}s`;obs.observe(el)});
+
+  // Accordion — one open at a time
+  document.querySelectorAll('details.faq-item').forEach(d=>{
+    d.addEventListener('toggle',()=>{
+      if(d.open) document.querySelectorAll('details.faq-item[open]').forEach(o=>{if(o!==d)o.removeAttribute('open')});
+    });
+  });
+
+  // Search
+  document.getElementById('faqSearch').addEventListener('input',function(){
+    const q = this.value.toLowerCase().trim();
+    let anyVisible = false;
+    document.querySelectorAll('.faq-item').forEach(item=>{
+      const text = item.textContent.toLowerCase();
+      const match = !q || text.includes(q);
+      item.style.display = match ? '' : 'none';
+      if(match) anyVisible = true;
+    });
+    document.querySelectorAll('.faq-group').forEach(g=>{
+      const visible = [...g.querySelectorAll('.faq-item')].some(i=>i.style.display!=='none');
+      g.style.display = visible ? '' : 'none';
+    });
+    document.getElementById('noResults').classList.toggle('show', !anyVisible);
+  });
+
+  // Sidebar active state on scroll
+  const groups = document.querySelectorAll('.faq-group');
+  const navLinks = document.querySelectorAll('.fn-links a');
+  window.addEventListener('scroll',()=>{
+    let current='';
+    groups.forEach(g=>{
+      if(window.scrollY >= g.offsetTop - 160) current = g.id;
+    });
+    navLinks.forEach(a=>{
+      a.classList.toggle('active', a.getAttribute('href')==='#'+current);
+    });
+  });
+</script>
+</body>
+</html>

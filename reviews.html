@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Reviews | AJM-TECH</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --bg:#080c10;--surface:#0e1318;--surface2:#131920;--border:#1e2a34;
+    --accent:#00d4ff;--accent2:#ff6b35;--accent3:#7cff6b;
+    --text:#e8edf2;--muted:#6b7c8d;
+    --heading:'Syne',sans-serif;--body:'DM Sans',sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.6;overflow-x:hidden}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 5vw;background:rgba(8,12,16,.85);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+  .logo{font-family:var(--heading);font-size:1.5rem;font-weight:800;letter-spacing:-.03em;color:var(--text);text-decoration:none}
+  .logo span{color:var(--accent)}
+  .nav-links{display:flex;gap:2rem;list-style:none}
+  .nav-links a{font-size:.9rem;font-weight:500;color:var(--muted);text-decoration:none;transition:color .2s;letter-spacing:.02em}
+  .nav-links a:hover{color:var(--text)}
+  .nav-links a.active{color:var(--accent)}
+  .nav-cta{background:var(--accent);color:#000;font-family:var(--heading);font-weight:700;font-size:.85rem;letter-spacing:.05em;padding:.55rem 1.4rem;border-radius:4px;text-decoration:none;transition:opacity .2s}
+  .nav-cta:hover{opacity:.85}
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+  .hamburger span{width:24px;height:2px;background:var(--text);display:block}
+
+  /* HERO */
+  .page-hero{position:relative;padding:9rem 5vw 5rem;overflow:hidden;border-bottom:1px solid var(--border);text-align:center}
+  .ph-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(0,212,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.03) 1px,transparent 1px);background-size:48px 48px}
+  .ph-glow{position:absolute;width:700px;height:500px;top:-200px;left:50%;transform:translateX(-50%);border-radius:50%;filter:blur(130px);background:radial-gradient(circle,rgba(0,212,255,.13) 0%,transparent 70%);z-index:0;animation:glow 7s ease-in-out infinite alternate}
+  .ph-glow2{position:absolute;width:400px;height:400px;bottom:0;right:5%;border-radius:50%;filter:blur(100px);background:radial-gradient(circle,rgba(255,107,53,.1) 0%,transparent 70%);z-index:0}
+  @keyframes glow{from{opacity:.6}to{opacity:1}}
+  .ph-content{position:relative;z-index:1;max-width:650px;margin:0 auto}
+  .page-label{display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.22);color:var(--accent);font-size:.78rem;font-weight:600;padding:.35rem .9rem;border-radius:999px;margin-bottom:1.5rem;letter-spacing:.08em;text-transform:uppercase}
+  .page-hero h1{font-family:var(--heading);font-size:clamp(2.2rem,5vw,4rem);font-weight:800;letter-spacing:-.03em;line-height:1.08;margin-bottom:1rem}
+  .page-hero h1 em{font-style:normal;color:var(--accent)}
+  .page-hero p{color:var(--muted);font-size:1.05rem;line-height:1.7;max-width:500px;margin:0 auto}
+
+  /* OVERALL SCORE */
+  .score-section{padding:4rem 5vw;background:var(--surface);border-bottom:1px solid var(--border)}
+  .score-inner{max-width:900px;margin:0 auto;display:grid;grid-template-columns:260px 1fr;gap:3rem;align-items:center}
+  .score-big{text-align:center}
+  .score-num{font-family:var(--heading);font-size:5.5rem;font-weight:800;color:var(--accent);line-height:1}
+  .score-stars{font-size:1.6rem;color:#fbbf24;margin:.4rem 0}
+  .score-label{color:var(--muted);font-size:.88rem}
+  .score-total{font-family:var(--heading);font-size:.78rem;font-weight:700;color:var(--muted);margin-top:.3rem;letter-spacing:.06em;text-transform:uppercase}
+  .score-bars{display:flex;flex-direction:column;gap:.9rem}
+  .bar-row{display:flex;align-items:center;gap:.9rem}
+  .bar-label{font-size:.82rem;color:var(--muted);width:60px;text-align:right;flex-shrink:0}
+  .bar-track{flex:1;height:8px;background:var(--surface2);border-radius:4px;overflow:hidden}
+  .bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+  .bar-pct{font-size:.78rem;color:var(--muted);width:36px;flex-shrink:0}
+  .score-cats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2rem;padding-top:2rem;border-top:1px solid var(--border)}
+  .sc-item{text-align:center}
+  .sc-num{font-family:var(--heading);font-size:1.6rem;font-weight:800;color:var(--accent3);line-height:1}
+  .sc-label{font-size:.75rem;color:var(--muted);margin-top:.25rem}
+
+  /* FILTERS */
+  .review-controls{padding:2rem 5vw;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:1rem}
+  .filter-pills{display:flex;gap:.5rem;flex-wrap:wrap}
+  .pill{font-size:.78rem;font-weight:600;letter-spacing:.04em;padding:.4rem 1rem;border-radius:999px;border:1px solid var(--border);color:var(--muted);background:transparent;cursor:pointer;transition:all .2s;font-family:var(--body)}
+  .pill:hover,.pill.active{background:var(--accent);color:#000;border-color:var(--accent)}
+  .sort-select{background:var(--surface);border:1px solid var(--border);color:var(--text);font-family:var(--body);font-size:.85rem;padding:.5rem 1rem;border-radius:6px;outline:none;cursor:pointer}
+  .sort-select:focus{border-color:var(--accent)}
+
+  /* FEATURED REVIEW */
+  .featured-review-wrap{padding:3rem 5vw 0}
+  .fr-label{font-size:.78rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:1.2rem}
+  .featured-review{background:var(--surface);border:1px solid rgba(0,212,255,.25);border-radius:16px;padding:2.5rem;position:relative;overflow:hidden}
+  .featured-review::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3))}
+  .fr-quote{font-size:5rem;color:var(--accent);opacity:.15;position:absolute;top:.5rem;left:1.5rem;font-family:Georgia,serif;line-height:1}
+  .fr-body{position:relative;z-index:1}
+  .fr-stars{color:#fbbf24;font-size:1.1rem;margin-bottom:1.2rem}
+  .fr-text{font-size:1.05rem;line-height:1.8;font-style:italic;color:var(--text);margin-bottom:1.8rem;max-width:800px}
+  .fr-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+  .fr-author{display:flex;align-items:center;gap:1rem}
+  .author-av{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--heading);font-weight:800;font-size:1.1rem;color:#000;flex-shrink:0}
+  .author-name{font-family:var(--heading);font-weight:700;font-size:1rem}
+  .author-role{font-size:.8rem;color:var(--muted)}
+  .fr-service{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;padding:.3rem .8rem;border-radius:4px;font-weight:700}
+  .fr-date{font-size:.78rem;color:var(--muted)}
+
+  /* REVIEWS GRID */
+  .reviews-main{padding:3rem 5vw 5rem;display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2rem}
+  .rcard{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.6rem;transition:border-color .25s,transform .25s;display:flex;flex-direction:column}
+  .rcard:hover{border-color:rgba(0,212,255,.3);transform:translateY(-3px)}
+  .rcard-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem}
+  .rc-stars{color:#fbbf24;font-size:.9rem}
+  .rc-service{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;padding:.25rem .65rem;border-radius:4px;font-weight:700}
+  .svc-repair{background:rgba(0,212,255,.1);color:var(--accent)}
+  .svc-design{background:rgba(255,107,53,.1);color:var(--accent2)}
+  .svc-web{background:rgba(167,139,250,.1);color:#a78bfa}
+  .svc-app{background:rgba(124,255,107,.1);color:var(--accent3)}
+  .svc-it{background:rgba(251,191,36,.1);color:#fbbf24}
+  .svc-sales{background:rgba(0,212,255,.08);color:var(--muted)}
+  .rc-text{font-size:.88rem;color:var(--muted);line-height:1.7;margin-bottom:1.2rem;flex:1}
+  .rc-highlight{background:rgba(0,212,255,.06);border-left:3px solid var(--accent);padding:.6rem .9rem;border-radius:0 6px 6px 0;font-size:.82rem;color:var(--text);font-style:italic;margin-bottom:1.2rem}
+  .rc-footer{display:flex;align-items:center;justify-content:space-between}
+  .rc-author{display:flex;align-items:center;gap:.7rem}
+  .rc-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--heading);font-weight:800;font-size:.85rem;color:#000;flex-shrink:0}
+  .rc-name{font-size:.85rem;font-weight:600}
+  .rc-location{font-size:.72rem;color:var(--muted)}
+  .rc-date{font-size:.72rem;color:var(--muted)}
+  .verified-badge{display:inline-flex;align-items:center;gap:.3rem;font-size:.68rem;color:var(--accent3);font-weight:600;margin-top:.4rem}
+
+  /* LEAVE A REVIEW */
+  .leave-review{padding:5rem 5vw;background:var(--surface);border-top:1px solid var(--border)}
+  .lr-inner{max-width:700px;margin:0 auto}
+  .section-label{font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.8rem}
+  .section-title{font-family:var(--heading);font-size:clamp(1.8rem,3.5vw,2.4rem);font-weight:800;letter-spacing:-.03em;margin-bottom:.8rem}
+  .section-title em{font-style:normal;color:var(--accent)}
+  .section-sub{color:var(--muted);font-size:.95rem;margin-bottom:2.5rem;line-height:1.7}
+  .review-form{display:flex;flex-direction:column;gap:1.2rem}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .form-group{display:flex;flex-direction:column;gap:.4rem}
+  .form-group label{font-size:.82rem;font-weight:600;color:var(--muted);letter-spacing:.03em}
+  .form-group input,.form-group select,.form-group textarea{background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:var(--body);font-size:.9rem;padding:.75rem 1rem;border-radius:7px;outline:none;transition:border-color .2s;resize:vertical}
+  .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--accent)}
+  .form-group input::placeholder,.form-group textarea::placeholder{color:var(--muted)}
+  .form-group select option{background:var(--surface)}
+  .star-picker{display:flex;gap:.4rem}
+  .star-picker span{font-size:1.8rem;cursor:pointer;transition:transform .15s;color:var(--border)}
+  .star-picker span.lit,.star-picker span:hover{color:#fbbf24}
+  .star-picker span:hover{transform:scale(1.2)}
+  .btn-submit{background:var(--accent);color:#000;font-family:var(--heading);font-weight:700;font-size:.95rem;padding:.9rem 2.5rem;border-radius:6px;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 0 24px rgba(0,212,255,.3);align-self:flex-start}
+  .btn-submit:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(0,212,255,.5)}
+  .form-success{display:none;text-align:center;padding:2.5rem;background:rgba(124,255,107,.06);border:1px solid rgba(124,255,107,.2);border-radius:12px}
+  .form-success .fs-icon{font-size:3rem;margin-bottom:1rem}
+  .form-success h3{font-family:var(--heading);font-size:1.2rem;font-weight:800;margin-bottom:.5rem}
+  .form-success p{color:var(--muted);font-size:.9rem}
+
+  /* PLATFORM BADGES */
+  .platforms{padding:3rem 5vw;text-align:center;border-top:1px solid var(--border)}
+  .plat-title{font-size:.8rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:1.8rem}
+  .plat-grid{display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap}
+  .plat-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.2rem 2rem;display:flex;align-items:center;gap:.8rem;text-decoration:none;color:var(--text);transition:border-color .2s,transform .2s}
+  .plat-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .plat-icon{font-size:1.4rem}
+  .plat-name{font-family:var(--heading);font-size:.88rem;font-weight:700}
+  .plat-score{font-size:.75rem;color:var(--muted)}
+
+  /* CTA */
+  .cta-band{background:linear-gradient(135deg,rgba(0,212,255,.08) 0%,rgba(255,107,53,.06) 100%);border-top:1px solid var(--border);text-align:center;padding:5rem 5vw}
+  .cta-band h2{font-family:var(--heading);font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;letter-spacing:-.03em;margin-bottom:1rem}
+  .cta-band p{color:var(--muted);margin-bottom:2rem;font-size:1.05rem}
+  .cta-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+  .btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#000;font-family:var(--heading);font-weight:700;font-size:.95rem;padding:.85rem 2rem;border-radius:5px;text-decoration:none;transition:transform .2s,box-shadow .2s;box-shadow:0 0 30px rgba(0,212,255,.3)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(0,212,255,.5)}
+  .btn-secondary{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--text);border:1px solid var(--border);font-family:var(--heading);font-weight:600;font-size:.95rem;padding:.85rem 2rem;border-radius:5px;text-decoration:none;transition:border-color .2s,color .2s}
+  .btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* FOOTER */
+  footer{background:var(--surface);border-top:1px solid var(--border);padding:4rem 5vw 2rem}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+  .footer-brand p{color:var(--muted);font-size:.88rem;line-height:1.7;margin:1rem 0;max-width:280px}
+  .footer-socials{display:flex;gap:.8rem}
+  .social-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.85rem;text-decoration:none;color:var(--muted);transition:all .2s}
+  .social-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .footer-col h5{font-family:var(--heading);font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:1.2rem}
+  .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+  .footer-col a{font-size:.88rem;color:var(--muted);text-decoration:none;transition:color .2s}
+  .footer-col a:hover{color:var(--text)}
+  .footer-bottom{border-top:1px solid var(--border);padding-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:.82rem;color:var(--muted)}
+  .footer-bottom a{color:var(--accent);text-decoration:none}
+
+  /* LOAD MORE */
+  .load-more-wrap{text-align:center;padding:0 5vw 3rem}
+  .btn-loadmore{background:transparent;border:1px solid var(--border);color:var(--muted);font-family:var(--heading);font-weight:600;font-size:.9rem;padding:.8rem 2.5rem;border-radius:6px;cursor:pointer;transition:all .2s}
+  .btn-loadmore:hover{border-color:var(--accent);color:var(--accent)}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.visible{opacity:1;transform:none}
+
+  @media(max-width:960px){
+    .score-inner{grid-template-columns:1fr}
+    .score-big{padding-bottom:2rem;border-bottom:1px solid var(--border)}
+    .reviews-main{grid-template-columns:1fr 1fr}
+    .footer-grid{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:600px){
+    .nav-links,.nav-cta{display:none}
+    .hamburger{display:flex}
+    .reviews-main{grid-template-columns:1fr}
+    .form-row{grid-template-columns:1fr}
+    .score-cats{grid-template-columns:repeat(2,1fr)}
+    .footer-grid{grid-template-columns:1fr}
+    .footer-bottom{flex-direction:column;text-align:center}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="ajm-tech.html"><span>AJM</span>-TECH</a>
+  <ul class="nav-links">
+    <li><a href="ajm-tech.html#services">Services</a></li>
+    <li><a href="portfolio.html">Portfolio</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="faqs.html">FAQs</a></li>
+    <li><a href="reviews.html" class="active">Reviews</a></li>
+    <li><a href="ajm-tech.html#contact">Contact</a></li>
+  </ul>
+  <a class="nav-cta" href="ajm-tech.html#contact">Get a Quote →</a>
+  <div class="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="ph-bg"></div>
+  <div class="ph-glow"></div>
+  <div class="ph-glow2"></div>
+  <div class="ph-content">
+    <div class="page-label">⭐ Client Reviews</div>
+    <h1>What Our Clients<br><em>Really Say</em></h1>
+    <p>Real reviews from real people across Uganda — from device repairs to full digital builds. No fluff, just honest feedback.</p>
+  </div>
+</div>
+
+<!-- SCORE SECTION -->
+<div class="score-section">
+  <div class="score-inner reveal">
+    <div class="score-big">
+      <div class="score-num">4.9</div>
+      <div class="score-stars">★★★★★</div>
+      <div class="score-label">Overall Rating</div>
+      <div class="score-total">Based on 214 Reviews</div>
+    </div>
+    <div>
+      <div class="score-bars">
+        <div class="bar-row"><span class="bar-label">5 ★</span><div class="bar-track"><div class="bar-fill" style="width:0%" data-width="88%"></div></div><span class="bar-pct">88%</span></div>
+        <div class="bar-row"><span class="bar-label">4 ★</span><div class="bar-track"><div class="bar-fill" style="width:0%" data-width="9%"></div></div><span class="bar-pct">9%</span></div>
+        <div class="bar-row"><span class="bar-label">3 ★</span><div class="bar-track"><div class="bar-fill" style="width:0%" data-width="2%"></div></div><span class="bar-pct">2%</span></div>
+        <div class="bar-row"><span class="bar-label">2 ★</span><div class="bar-track"><div class="bar-fill" style="width:0%" data-width="1%"></div></div><span class="bar-pct">1%</span></div>
+        <div class="bar-row"><span class="bar-label">1 ★</span><div class="bar-track"><div class="bar-fill" style="width:0%" data-width="0%"></div></div><span class="bar-pct">0%</span></div>
+      </div>
+      <div class="score-cats">
+        <div class="sc-item"><div class="sc-num">4.9</div><div class="sc-label">Quality</div></div>
+        <div class="sc-item"><div class="sc-num">4.8</div><div class="sc-label">Speed</div></div>
+        <div class="sc-item"><div class="sc-num">5.0</div><div class="sc-label">Communication</div></div>
+        <div class="sc-item"><div class="sc-num">4.9</div><div class="sc-label">Value</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div class="review-controls">
+  <div class="filter-pills">
+    <button class="pill active" onclick="filterReviews(this,'all')">All</button>
+    <button class="pill" onclick="filterReviews(this,'repair')">🔧 Repairs</button>
+    <button class="pill" onclick="filterReviews(this,'design')">🎨 Design</button>
+    <button class="pill" onclick="filterReviews(this,'web')">💻 Web Dev</button>
+    <button class="pill" onclick="filterReviews(this,'app')">📱 Apps</button>
+    <button class="pill" onclick="filterReviews(this,'it')">🖥️ IT & CCTV</button>
+    <button class="pill" onclick="filterReviews(this,'sales')">🛒 Sales</button>
+  </div>
+  <select class="sort-select" onchange="sortReviews(this.value)">
+    <option value="recent">Most Recent</option>
+    <option value="highest">Highest Rated</option>
+    <option value="helpful">Most Helpful</option>
+  </select>
+</div>
+
+<!-- FEATURED -->
+<div class="featured-review-wrap reveal">
+  <div class="fr-label">✦ Featured Review</div>
+  <div class="featured-review">
+    <div class="fr-quote">"</div>
+    <div class="fr-body">
+      <div class="fr-stars">★★★★★</div>
+      <p class="fr-text">AJM-TECH completely transformed our business. We came to them with a broken website, a logo we were embarrassed to share, and no real online presence. Six months later, we have a beautiful e-commerce platform driving 40% of our revenue, a brand identity we're proud of, and a team that genuinely cares about our success. They're not just a service provider — they've become a true partner. I recommend them to every business owner I meet.</p>
+      <div class="fr-footer">
+        <div class="fr-author">
+          <div class="author-av" style="background:var(--accent);">A</div>
+          <div>
+            <div class="author-name">Aisha Nalubega</div>
+            <div class="author-role">CEO, GreenLeaf Organics · Kampala</div>
+            <div class="verified-badge">✔ Verified Client</div>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <span class="fr-service" style="background:rgba(167,139,250,.1);color:#a78bfa">Web Dev + Branding</span>
+          <div class="fr-date" style="margin-top:.4rem">February 2026</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REVIEWS GRID -->
+<div class="reviews-main" id="reviewsGrid">
+
+  <div class="rcard reveal" data-cat="repair">
+    <div class="rcard-top">
+      <div class="rc-stars">★★★★★</div>
+      <span class="rc-service svc-repair">Repair</span>
+    </div>
+    <div class="rc-highlight">"Fixed my MacBook in under 3 hours. Recovered all my data too."</div>
+    <p class="rc-text">I was terrified when my MacBook stopped booting — 3 years of work on there. AJM-TECH diagnosed a failed SSD, replaced it, and recovered every single file. Professional from start to finish and the price was very fair.</p>
+    <div class="rc-footer">
+      <div class="rc-author">
+        <div class="rc-av" style="background:#00d4ff;">K</div>
+        <div><div class="rc-name">Kato Brian</div><div class="rc-location">Freelance Videographer, Kampala</div></div>
+      </div>
+      <div class="rc-date">Mar 2026</div>
+    </div>
+    <div class="verified-badge">✔ Verified</div>
+  </div>
+
+  <div class="rcard reveal" data-cat="web">
+    <div class="rcard-top">
+      <div class="rc-stars">★★★★★</div>
+      <span class="rc-service svc-web">Web Dev</span>
+    </div>
+    <div class="rc-highlight">"Our new website got us 3 new corporate clients in the first month."</div>
+    <p class="rc-text">Mark and the team built us a clean, fast, professional website that actually reflects who we are. The whole process was smooth — they communicated at every step and delivered exactly on time. The ROI has been incredible.</p>
+    <div class="rc-footer">
+      <div class="rc-author">
+        <div class="rc-av" style="background:#a78bfa;">D</div>
+        <div><div class="rc-name">David Ochieng</div><div class="rc-location">Director, Ochieng Consulting</div></div>
+      </div>
+      <div class="rc-date">Mar 2026</div>
+    </div>
+    <div class="verified-badge">✔ Verified</div>
+  </div>
+
+  <div class="rcard reveal" data-cat="design">
+    <div class="rcard-top">
+      <div class="rc-stars">★★★★★</div>
+      <span class="rc-service svc-design">Design</span>
+    </div>
+    <div class="rc-highlight">"My logo is everything I imagined but couldn't describe."</div>
+    <p class="rc-text">Joan at AJM-TECH just got it. I gave her a vague brief and she came back with concepts that were spot-on. The final logo and brand kit are stunning — I've had so many compliments since launching. Worth every shilling.</p>
+    <div class="rc-footer">
+      <div class="rc-author">
+        <div class="rc-av" style="background:#ff6b35;">R</div>
+        <div><div class="rc-name">Ruth Atim</div><div class="rc-location">Owner, Atim Bakes</div></div>
+      </div>
+      <div class="rc-date">Feb 2026</div>
+    </div>
+    <div class="verified-badge">✔ Verified</div>
+  </div>
+
+  <div class="rcard reveal" data-cat="it">
+    <div class="rcard-top">
+      <div class="rc-stars">★★★★★</div>
+      <span class="rc-service svc-it">IT & CCTV</span>
+    </div>
+    <div class="rc-highlight">"School network and CCTV done in 2 days. Flawless."</div>
+    <p class="rc-text">We needed a full computer lab, structured cabling, and a 12-camera CCTV system installed before the new term. AJM-TECH came in, planned everything overnight, and executed it in two days. The quality of the work is excellent.</p>
+    <div class="rc-footer">
+      <div class="rc-author">
+        <div class="rc-av" style="background:#7cff6b;">M</div>
+        <div><div class="rc-name">Mr. Muwonge</div><div class="rc-location">Director, Sunrise Academy</div></div>
+      </div>
+      <div class="rc-date">Feb 2026</div>
+    </div>
+    <div class="verified-badge">✔ Verified</div>
+  </div>
+
+  <div class="rcard reveal" data-cat="repair">
+    <div class="rcard-top">
+      <div class="rc-stars">★★★★★</div>
+      <span class="rc-service svc-repair">Repair</span>
+    </div>
+    <p class="rc-text">Dropped my Samsung S23 and shattered the screen completely. AJM-TECH replaced it with an original screen in about 90 minutes while I waited. Honestly couldn't tell it had ever been broken. Sarah was brilliant and very honest about the part quality.</p>
+    <div class="rc-footer">
+      <div class="rc-author">
+        <div class="rc-av" style="background:#fbbf24;">P</div>
+        <div><div class="rc-name">Patricia Nakimuli</div><div class="rc-location">Teacher, Entebbe</div></div>
+      </div>
+      <div class="rc-date">Jan 2026</div>
+    </div>
+    <div class="verified-badge">✔ Verified</div>
+  </div>
+
+  <div class="rcard reveal" data-cat="app">
+    <div class="rcard-top">
+      <div class="rc-stars">★★★★★</div>
+      <span class="rc-service svc-app">App Dev</span>
+    </div>
+    <div class="rc-highlight">"Our app launched on time and has 4.8 stars on the Play Store."</div>
+    <p class="rc-text">We had a complex brief — dual apps, real-time GPS, mobile payments. Mark's team broke it down perfectly, delivered an MVP on time, and we've been iterating ever since. They clearly know what they're doing and communicate like professionals.</p>
+    <div class="rc-footer">
+      <div class="rc-author">
+        <div class="rc-av" style="background:#00d4ff;">J</div>
+        <div><div class="rc-name">James Lubega</div><div class="rc-location">CEO, RiderLink Uganda</div></div>
+      </div>
+      <div class="rc-date">Jan 2026</div>
+    </div>
+    <div class="verified-badge">✔ Verified</div>
+  </div>
+
+  <div class="rcard reveal" data-cat="web">
+    <div class="rcard-top">
+      <div class="rc-stars">★★★★☆</div>
+      <span class="rc-service svc-web">Web Dev</span>
+    </div>
+    <p class="rc-text">Very happy with the final website. The design is clean, loads fast, and works well on mobile. Took slightly longer than originally estimated due to my own delays on content — communication throughout was great. I'd use them again for sure.</p>
+    <div class="rc-footer">
+      <div class="rc-author">
+        <div class="rc-av" style="background:#a78bfa;">N</div>
+        <div><div class="rc-name">Nanteza Sheila</div><div class="rc-location">Dietitian & Nutritionist, Kampala</div></div>
+      </div>
+      <div class="rc-date">Dec 2025</div>
+    </div>
+    <div class="verified-badge">✔ Verified</div>
+  </div>
+
+  <div class="rcard reveal" data-cat="sales">
+    <div class="rcard-top">
+      <div class="rc-stars">★★★★★</div>
+      <span class="rc-service svc-sales">Sales</span>
+    </div>
+    <p class="rc-text">Bought a refurbished iPhone 13 from AJM-TECH. Was sceptical at first but they showed me the diagnostic report and explained everything clearly. 3 months later it's still running perfectly. Will buy from them again.</p>
+    <div class="rc-footer">
+      <div class="rc-author">
+        <div class="rc-av" style="background:#ff6b35;">T</div>
+        <div><div class="rc-name">Timothy Kasule</div><div class="rc-location">Student, Makerere University</div></div>
+      </div>
+      <div class="rc-date">Dec 2025</div>
+    </div>
+    <div class="verified-badge">✔ Verified</div>
+  </div>
+
+  <div class="rcard reveal" data-cat="design">
+    <div class="rcard-top">
+      <div class="rc-stars">★★★★★</div>
+      <span class="rc-service svc-design">Design</span>
+    </div>
+    <div class="rc-highlight">"Every piece of content we post now gets compliments on our branding."</div>
+    <p class="rc-text">AJM-TECH designed our full social media kit — post templates, story formats, profile assets, everything. The consistency has completely elevated how people perceive our brand. We went from looking like a startup to looking like a proper company overnight.</p>
+    <div class="rc-footer">
+      <div class="rc-author">
+        <div class="rc-av" style="background:#7cff6b;">C</div>
+        <div><div class="rc-name">Cynthia Angom</div><div class="rc-location">Founder, CynFit Studio</div></div>
+      </div>
+      <div class="rc-date">Nov 2025</div>
+    </div>
+    <div class="verified-badge">✔ Verified</div>
+  </div>
+
+  <div class="rcard reveal" data-cat="it">
+    <div class="rcard-top">
+      <div class="rc-stars">★★★★★</div>
+      <span class="rc-service svc-it">IT Support</span>
+    </div>
+    <p class="rc-text">We have an annual IT support contract with AJM-TECH for our office of 35 staff. Response times are excellent — they've never left us hanging. The team is knowledgeable, calm under pressure, and proactive about flagging issues before they become problems.</p>
+    <div class="rc-footer">
+      <div class="rc-author">
+        <div class="rc-av" style="background:#fbbf24;">F</div>
+        <div><div class="rc-name">Fatuma Wanjiru</div><div class="rc-location">Operations Manager, Jinja Logistics</div></div>
+      </div>
+      <div class="rc-date">Nov 2025</div>
+    </div>
+    <div class="verified-badge">✔ Verified</div>
+  </div>
+
+  <div class="rcard reveal" data-cat="repair">
+    <div class="rcard-top">
+      <div class="rc-stars">★★★★★</div>
+      <span class="rc-service svc-repair">Repair</span>
+    </div>
+    <p class="rc-text">My laptop fell off the table and the hinge snapped completely. I thought it was done for. AJM-TECH sourced a replacement hinge within a day and had it working like new. The technician even cleaned the fan while they had it open — didn't charge extra for that.</p>
+    <div class="rc-footer">
+      <div class="rc-author">
+        <div class="rc-av" style="background:#00d4ff;">S</div>
+        <div><div class="rc-name">Samuel Onyango</div><div class="rc-location">Architect, Kampala</div></div>
+      </div>
+      <div class="rc-date">Oct 2025</div>
+    </div>
+    <div class="verified-badge">✔ Verified</div>
+  </div>
+
+  <div class="rcard reveal" data-cat="app">
+    <div class="rcard-top">
+      <div class="rc-stars">★★★★★</div>
+      <span class="rc-service svc-app">App Dev</span>
+    </div>
+    <p class="rc-text">We needed a patient management app built fast — we had a grant deadline. AJM-TECH delivered a clean MVP in 8 weeks. The app has been used in our clinic daily for 6 months without a single critical bug. Support has been responsive and professional throughout.</p>
+    <div class="rc-footer">
+      <div class="rc-author">
+        <div class="rc-av" style="background:#a78bfa;">E</div>
+        <div><div class="rc-name">Dr. Esther Achan</div><div class="rc-location">Medical Director, Kampala Wellness</div></div>
+      </div>
+      <div class="rc-date">Sep 2025</div>
+    </div>
+    <div class="verified-badge">✔ Verified</div>
+  </div>
+
+</div>
+
+<!-- LOAD MORE -->
+<div class="load-more-wrap">
+  <button class="btn-loadmore" onclick="this.textContent='No more reviews to load'">Load More Reviews</button>
+</div>
+
+<!-- PLATFORM BADGES -->
+<div class="platforms reveal">
+  <div class="plat-title">Also reviewed on</div>
+  <div class="plat-grid">
+    <a class="plat-card" href="#">
+      <span class="plat-icon">🌐</span>
+      <div><div class="plat-name">Google</div><div class="plat-score">4.9 · 142 reviews</div></div>
+    </a>
+    <a class="plat-card" href="#">
+      <span class="plat-icon">📘</span>
+      <div><div class="plat-name">Facebook</div><div class="plat-score">4.8 · 58 reviews</div></div>
+    </a>
+    <a class="plat-card" href="#">
+      <span class="plat-icon">💼</span>
+      <div><div class="plat-name">LinkedIn</div><div class="plat-score">Recommended · 14 reviews</div></div>
+    </a>
+  </div>
+</div>
+
+<!-- LEAVE A REVIEW -->
+<div class="leave-review" id="leaveReview">
+  <div class="lr-inner reveal">
+    <div class="section-label">Share Your Experience</div>
+    <div class="section-title">Leave a <em>Review</em></div>
+    <p class="section-sub">Worked with us? We'd love to hear about your experience. Your feedback helps us improve and helps others make informed decisions.</p>
+
+    <div id="reviewFormWrap">
+      <form class="review-form" onsubmit="submitReview(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your Name *</label>
+            <input type="text" placeholder="e.g. Kato Brian" required/>
+          </div>
+          <div class="form-group">
+            <label>Your Location</label>
+            <input type="text" placeholder="e.g. Kampala, Uganda"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Service Used *</label>
+            <select required>
+              <option value="" disabled selected>Select a service…</option>
+              <option>Tech Repairs</option>
+              <option>Tech Sales</option>
+              <option>Graphics Design</option>
+              <option>Web Development</option>
+              <option>App Development</option>
+              <option>IT Support / CCTV</option>
+              <option>Multiple Services</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Your Rating *</label>
+            <div class="star-picker" id="starPicker">
+              <span onclick="setRating(1)">★</span>
+              <span onclick="setRating(2)">★</span>
+              <span onclick="setRating(3)">★</span>
+              <span onclick="setRating(4)">★</span>
+              <span onclick="setRating(5)">★</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Your Review *</label>
+          <textarea rows="5" placeholder="Tell us about your experience — what did we do well? What could we improve?" required></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Submit Review →</button>
+      </form>
+    </div>
+
+    <div class="form-success" id="formSuccess">
+      <div class="fs-icon">🎉</div>
+      <h3>Thank you for your review!</h3>
+      <p>Your feedback has been received and will appear on the page after a brief verification. We really appreciate you taking the time.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-band">
+  <div class="reveal">
+    <h2>Join 200+ Happy Clients</h2>
+    <p>Ready to experience the AJM-TECH difference? Let's get started today.</p>
+    <div class="cta-actions">
+      <a class="btn-primary" href="ajm-tech.html#contact">Get a Free Quote →</a>
+      <a class="btn-secondary" href="portfolio.html">See Our Work</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a class="logo" href="ajm-tech.html"><span>AJM</span>-TECH</a>
+      <p>Uganda's trusted technology partner for repairs, sales, design, and development.</p>
+      <div class="footer-socials">
+        <a class="social-btn" href="#">f</a><a class="social-btn" href="#">ig</a>
+        <a class="social-btn" href="#">w</a><a class="social-btn" href="#">𝕏</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Services</h5>
+      <ul>
+        <li><a href="#">Tech Repairs</a></li><li><a href="#">Tech Sales</a></li>
+        <li><a href="#">Graphics Design</a></li><li><a href="#">Web Development</a></li>
+        <li><a href="#">App Development</a></li><li><a href="#">IT Support</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="about.html">About Us</a></li><li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="blog.html">Blog</a></li><li><a href="faqs.html">FAQs</a></li>
+        <li><a href="reviews.html">Reviews</a></li><li><a href="ajm-tech.html#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <ul>
+        <li><a href="#">📍 Kampala, Uganda</a></li>
+        <li><a href="tel:+256700000000">📞 +256 700 000 000</a></li>
+        <li><a href="mailto:info@ajm-tech.ug">✉️ info@ajm-tech.ug</a></li>
+        <li><a href="#">⏰ Mon–Sat, 8am–7pm</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 AJM-TECH. All rights reserved.</span>
+    <span>Designed &amp; Built by <a href="#">AJM-TECH</a></span>
+    <span><a href="#">Privacy Policy</a> · <a href="#">Terms</a></span>
+  </div>
+</footer>
+
+<script>
+  // Reveal
+  const obs = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')}),{threshold:.08});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=`${(i%4)*.08}s`;obs.observe(el)});
+
+  // Animate bars
+  const barObs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        document.querySelectorAll('.bar-fill').forEach(b=>{b.style.width=b.dataset.width});
+        barObs.disconnect();
+      }
+    });
+  },{threshold:.3});
+  const scoreSection = document.querySelector('.score-section');
+  if(scoreSection) barObs.observe(scoreSection);
+
+  // Filter reviews
+  function filterReviews(btn, cat) {
+    document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.rcard').forEach(c=>{
+      c.style.opacity=(cat==='all'||c.dataset.cat===cat)?'1':'0.2';
+      c.style.pointerEvents=(cat==='all'||c.dataset.cat===cat)?'':'none';
+    });
+  }
+
+  // Sort (visual only)
+  function sortReviews(val){ console.log('Sort by:', val); }
+
+  // Star picker
+  let rating = 0;
+  function setRating(r){
+    rating = r;
+    document.querySelectorAll('#starPicker span').forEach((s,i)=>{
+      s.classList.toggle('lit', i<r);
+    });
+  }
+
+  // Review form submit
+  function submitReview(e){
+    e.preventDefault();
+    document.getElementById('reviewFormWrap').style.display='none';
+    document.getElementById('formSuccess').style.display='block';
+  }
+</script>
+</body>
+</html>
