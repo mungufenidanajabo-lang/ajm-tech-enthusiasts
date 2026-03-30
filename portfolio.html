@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Portfolio | AJM-TECH</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --bg:#080c10;--surface:#0e1318;--surface2:#131920;--border:#1e2a34;
+    --accent:#00d4ff;--accent2:#ff6b35;--accent3:#7cff6b;
+    --text:#e8edf2;--muted:#6b7c8d;
+    --heading:'Syne',sans-serif;--body:'DM Sans',sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.6;overflow-x:hidden}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 5vw;background:rgba(8,12,16,.85);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+  .logo{font-family:var(--heading);font-size:1.5rem;font-weight:800;letter-spacing:-.03em;color:var(--text);text-decoration:none}
+  .logo span{color:var(--accent)}
+  .nav-links{display:flex;gap:2rem;list-style:none}
+  .nav-links a{font-size:.9rem;font-weight:500;color:var(--muted);text-decoration:none;transition:color .2s;letter-spacing:.02em}
+  .nav-links a:hover{color:var(--text)}
+  .nav-links a.active{color:var(--accent)}
+  .nav-cta{background:var(--accent);color:#000;font-family:var(--heading);font-weight:700;font-size:.85rem;letter-spacing:.05em;padding:.55rem 1.4rem;border-radius:4px;text-decoration:none;transition:opacity .2s}
+  .nav-cta:hover{opacity:.85}
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+  .hamburger span{width:24px;height:2px;background:var(--text);display:block}
+
+  /* PAGE HERO */
+  .page-hero{position:relative;padding:9rem 5vw 5rem;overflow:hidden;border-bottom:1px solid var(--border)}
+  .ph-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(0,212,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.03) 1px,transparent 1px);background-size:48px 48px}
+  .ph-glow{position:absolute;width:700px;height:500px;top:-150px;right:-150px;border-radius:50%;filter:blur(130px);background:radial-gradient(circle,rgba(0,212,255,.13) 0%,transparent 70%);z-index:0}
+  .ph-glow2{position:absolute;width:400px;height:400px;bottom:-50px;left:0;border-radius:50%;filter:blur(100px);background:radial-gradient(circle,rgba(255,107,53,.1) 0%,transparent 70%);z-index:0}
+  .ph-content{position:relative;z-index:1;text-align:center;max-width:680px;margin:auto}
+  .page-label{display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.22);color:var(--accent);font-size:.78rem;font-weight:600;padding:.35rem .9rem;border-radius:999px;margin-bottom:1.5rem;letter-spacing:.08em;text-transform:uppercase}
+  .page-hero h1{font-family:var(--heading);font-size:clamp(2.2rem,5vw,4rem);font-weight:800;letter-spacing:-.03em;line-height:1.08;margin-bottom:1rem}
+  .page-hero h1 em{font-style:normal;color:var(--accent)}
+  .page-hero p{color:var(--muted);font-size:1.05rem;line-height:1.7;max-width:520px;margin:0 auto}
+
+  /* STATS ROW */
+  .stats-row{display:flex;justify-content:center;gap:3rem;padding:2.5rem 5vw;background:var(--surface);border-bottom:1px solid var(--border);flex-wrap:wrap}
+  .sr-item{text-align:center}
+  .sr-num{font-family:var(--heading);font-size:2rem;font-weight:800;color:var(--accent);line-height:1}
+  .sr-label{font-size:.82rem;color:var(--muted);margin-top:.3rem}
+
+  /* FILTER */
+  .portfolio-filters{padding:2rem 5vw;display:flex;justify-content:center;gap:.6rem;flex-wrap:wrap;border-bottom:1px solid var(--border)}
+  .pf-btn{font-size:.82rem;font-weight:600;letter-spacing:.05em;padding:.5rem 1.3rem;border-radius:6px;border:1px solid var(--border);color:var(--muted);background:transparent;cursor:pointer;transition:all .2s;font-family:var(--body)}
+  .pf-btn:hover,.pf-btn.active{background:var(--accent);color:#000;border-color:var(--accent)}
+
+  /* MASONRY GRID */
+  .portfolio-grid{padding:3rem 5vw 2rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+  .pcard{border-radius:12px;overflow:hidden;position:relative;background:var(--surface2);border:1px solid var(--border);cursor:pointer;transition:transform .3s,border-color .3s}
+  .pcard:hover{transform:translateY(-5px);border-color:var(--card-accent,var(--accent))}
+  .pcard.wide{grid-column:span 2}
+  .pcard.tall{grid-row:span 2}
+  .pcard-visual{display:flex;align-items:center;justify-content:center;font-size:3.5rem;min-height:200px;position:relative;overflow:hidden}
+  .pcard.wide .pcard-visual{min-height:220px}
+  .pcard.tall .pcard-visual{min-height:440px}
+  .pcard-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,12,16,.95) 0%,rgba(8,12,16,.2) 60%,transparent 100%);padding:1.5rem;display:flex;flex-direction:column;justify-content:flex-end;opacity:0;transition:opacity .3s}
+  .pcard:hover .pcard-overlay{opacity:1}
+  .pcard-info{padding:1.2rem}
+  .pcard-cat{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;font-weight:700;color:var(--card-accent,var(--accent));margin-bottom:.4rem}
+  .pcard-title{font-family:var(--heading);font-size:.95rem;font-weight:700;line-height:1.3;margin-bottom:.3rem}
+  .pcard-client{font-size:.78rem;color:var(--muted)}
+  .pcard-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.7rem}
+  .ptag{font-size:.68rem;padding:.2rem .55rem;border-radius:3px;border:1px solid var(--border);color:var(--muted)}
+  .overlay-link{display:inline-flex;align-items:center;gap:.4rem;color:var(--accent);font-size:.82rem;font-weight:600;text-decoration:none;margin-top:.5rem}
+  .pcard-glow{position:absolute;inset:0;opacity:.06;pointer-events:none}
+
+  /* CASE STUDIES */
+  .case-section{padding:5rem 5vw;background:var(--surface);border-top:1px solid var(--border)}
+  .section-label{font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.8rem}
+  .section-title{font-family:var(--heading);font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:2.5rem}
+  .section-title em{font-style:normal;color:var(--accent)}
+  .case-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}
+  .case-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color .25s}
+  .case-card:hover{border-color:var(--accent)}
+  .cc-header{padding:2rem;display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid var(--border)}
+  .cc-icon{font-size:2.2rem}
+  .cc-badge{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;padding:.3rem .8rem;border-radius:4px;font-weight:700}
+  .cc-body{padding:2rem}
+  .cc-body h3{font-family:var(--heading);font-size:1.2rem;font-weight:800;margin-bottom:.6rem}
+  .cc-body p{font-size:.88rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem}
+  .cc-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;padding:1.2rem;background:var(--surface2);border-radius:8px;margin-bottom:1.2rem}
+  .metric-val{font-family:var(--heading);font-size:1.4rem;font-weight:800;color:var(--accent);line-height:1}
+  .metric-label{font-size:.72rem;color:var(--muted);margin-top:.2rem}
+  .cc-tech{display:flex;flex-wrap:wrap;gap:.4rem}
+  .tech-pill{font-size:.72rem;padding:.25rem .7rem;border-radius:4px;background:rgba(0,212,255,.08);color:var(--accent);border:1px solid rgba(0,212,255,.2)}
+
+  /* PROCESS */
+  .process-section{padding:5rem 5vw}
+  .process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:3rem;position:relative}
+  .process-steps::before{content:'';position:absolute;top:28px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--border),var(--border),transparent)}
+  .step{text-align:center;position:relative}
+  .step-num{width:56px;height:56px;border-radius:50%;background:var(--surface);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;font-family:var(--heading);font-weight:800;font-size:1rem;color:var(--accent);position:relative;z-index:1;transition:border-color .3s,background .3s}
+  .step:hover .step-num{border-color:var(--accent);background:rgba(0,212,255,.1)}
+  .step h4{font-family:var(--heading);font-size:.95rem;font-weight:700;margin-bottom:.4rem}
+  .step p{font-size:.82rem;color:var(--muted);line-height:1.6}
+
+  /* CTA */
+  .cta-band{background:linear-gradient(135deg,rgba(0,212,255,.08) 0%,rgba(255,107,53,.06) 100%);border-top:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center;padding:5rem 5vw}
+  .cta-band h2{font-family:var(--heading);font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;letter-spacing:-.03em;margin-bottom:1rem}
+  .cta-band p{color:var(--muted);margin-bottom:2rem;font-size:1.05rem}
+  .cta-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+  .btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#000;font-family:var(--heading);font-weight:700;font-size:.95rem;padding:.85rem 2rem;border-radius:5px;text-decoration:none;transition:transform .2s,box-shadow .2s;box-shadow:0 0 30px rgba(0,212,255,.3)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(0,212,255,.5)}
+  .btn-secondary{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--text);border:1px solid var(--border);font-family:var(--heading);font-weight:600;font-size:.95rem;padding:.85rem 2rem;border-radius:5px;text-decoration:none;transition:border-color .2s,color .2s}
+  .btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* FOOTER */
+  footer{background:var(--surface);border-top:1px solid var(--border);padding:4rem 5vw 2rem}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+  .footer-brand p{color:var(--muted);font-size:.88rem;line-height:1.7;margin:1rem 0;max-width:280px}
+  .footer-socials{display:flex;gap:.8rem}
+  .social-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.85rem;text-decoration:none;color:var(--muted);transition:all .2s}
+  .social-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .footer-col h5{font-family:var(--heading);font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:1.2rem}
+  .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+  .footer-col a{font-size:.88rem;color:var(--muted);text-decoration:none;transition:color .2s}
+  .footer-col a:hover{color:var(--text)}
+  .footer-bottom{border-top:1px solid var(--border);padding-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:.82rem;color:var(--muted)}
+  .footer-bottom a{color:var(--accent);text-decoration:none}
+
+  /* LIGHTBOX */
+  .lightbox{position:fixed;inset:0;background:rgba(8,12,16,.95);z-index:200;display:none;align-items:center;justify-content:center;padding:2rem;backdrop-filter:blur(10px)}
+  .lightbox.open{display:flex}
+  .lb-content{background:var(--surface);border:1px solid var(--border);border-radius:16px;max-width:700px;width:100%;padding:2.5rem;position:relative}
+  .lb-close{position:absolute;top:1rem;right:1rem;background:var(--surface2);border:1px solid var(--border);color:var(--muted);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+  .lb-close:hover{border-color:var(--accent);color:var(--accent)}
+  .lb-visual{font-size:4rem;text-align:center;padding:2rem;background:var(--surface2);border-radius:10px;margin-bottom:1.5rem}
+  .lb-title{font-family:var(--heading);font-size:1.4rem;font-weight:800;margin-bottom:.5rem}
+  .lb-meta{font-size:.82rem;color:var(--muted);margin-bottom:1rem}
+  .lb-desc{font-size:.9rem;color:var(--muted);line-height:1.7}
+
+  /* REVEAL */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.visible{opacity:1;transform:none}
+
+  @media(max-width:960px){
+    .portfolio-grid{grid-template-columns:repeat(2,1fr)}
+    .pcard.wide{grid-column:span 2}
+    .case-grid{grid-template-columns:1fr}
+    .process-steps{grid-template-columns:repeat(2,1fr)}
+    .process-steps::before{display:none}
+    .footer-grid{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:600px){
+    .nav-links,.nav-cta{display:none}
+    .hamburger{display:flex}
+    .portfolio-grid{grid-template-columns:1fr}
+    .pcard.wide{grid-column:span 1}
+    .stats-row{gap:1.5rem}
+    .footer-grid{grid-template-columns:1fr}
+    .process-steps{grid-template-columns:1fr 1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="ajm-tech.html"><span>AJM</span>-TECH</a>
+  <ul class="nav-links">
+    <li><a href="ajm-tech.html#services">Services</a></li>
+    <li><a href="portfolio.html" class="active">Portfolio</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="ajm-tech.html#contact">Contact</a></li>
+  </ul>
+  <a class="nav-cta" href="ajm-tech.html#contact">Get a Quote →</a>
+  <div class="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="ph-bg"></div>
+  <div class="ph-glow"></div>
+  <div class="ph-glow2"></div>
+  <div class="ph-content">
+    <div class="page-label">🗂 Our Work</div>
+    <h1>Projects That<br><em>Speak for Themselves</em></h1>
+    <p>From device repairs to full digital transformations — here's a selection of work we're proud of.</p>
+  </div>
+</div>
+
+<!-- STATS ROW -->
+<div class="stats-row">
+  <div class="sr-item"><div class="sr-num">300+</div><div class="sr-label">Projects Delivered</div></div>
+  <div class="sr-item"><div class="sr-num">80+</div><div class="sr-label">Websites Built</div></div>
+  <div class="sr-item"><div class="sr-num">150+</div><div class="sr-label">Brands Designed</div></div>
+  <div class="sr-item"><div class="sr-num">40+</div><div class="sr-label">Apps Deployed</div></div>
+  <div class="sr-item"><div class="sr-num">25+</div><div class="sr-label">IT Setups</div></div>
+</div>
+
+<!-- FILTER -->
+<div class="portfolio-filters">
+  <button class="pf-btn active" onclick="filterGrid(this,'all')">All Work</button>
+  <button class="pf-btn" onclick="filterGrid(this,'web')">Web Dev</button>
+  <button class="pf-btn" onclick="filterGrid(this,'app')">Mobile Apps</button>
+  <button class="pf-btn" onclick="filterGrid(this,'design')">Branding &amp; Design</button>
+  <button class="pf-btn" onclick="filterGrid(this,'it')">IT &amp; CCTV</button>
+  <button class="pf-btn" onclick="filterGrid(this,'repair')">Repairs</button>
+</div>
+
+<!-- PORTFOLIO GRID -->
+<div class="portfolio-grid" id="portfolioGrid">
+
+  <div class="pcard wide reveal" data-cat="web" style="--card-accent:var(--accent)" onclick="openLightbox('web1')">
+    <div class="pcard-visual" style="background:linear-gradient(135deg,#0a1628,#0e2240)">🛒</div>
+    <div class="pcard-overlay"><a class="overlay-link" href="#">View Project →</a></div>
+    <div class="pcard-info">
+      <div class="pcard-cat">Web Development</div>
+      <div class="pcard-title">Kampala Retail — Full E-Commerce Platform</div>
+      <div class="pcard-client">Client: Kampala Retail Group</div>
+      <div class="pcard-tags"><span class="ptag">React</span><span class="ptag">Node.js</span><span class="ptag">Stripe</span><span class="ptag">MySQL</span></div>
+    </div>
+  </div>
+
+  <div class="pcard reveal" data-cat="design" style="--card-accent:var(--accent2)" onclick="openLightbox('design1')">
+    <div class="pcard-visual" style="background:linear-gradient(135deg,#180e08,#2a1408)">🎯</div>
+    <div class="pcard-overlay"><a class="overlay-link" href="#">View Project →</a></div>
+    <div class="pcard-info">
+      <div class="pcard-cat">Branding &amp; Design</div>
+      <div class="pcard-title">FinTech Startup — Full Brand Identity</div>
+      <div class="pcard-client">Client: NovaPay Uganda</div>
+      <div class="pcard-tags"><span class="ptag">Logo</span><span class="ptag">Brand Kit</span><span class="ptag">UI Design</span></div>
+    </div>
+  </div>
+
+  <div class="pcard tall reveal" data-cat="app" style="--card-accent:#a78bfa" onclick="openLightbox('app1')">
+    <div class="pcard-visual" style="background:linear-gradient(135deg,#100a20,#1a0e35)">📱</div>
+    <div class="pcard-overlay"><a class="overlay-link" href="#">View Project →</a></div>
+    <div class="pcard-info">
+      <div class="pcard-cat">Mobile App</div>
+      <div class="pcard-title">RiderLink — Boda Dispatch App</div>
+      <div class="pcard-client">Client: RiderLink Ltd</div>
+      <div class="pcard-tags"><span class="ptag">Flutter</span><span class="ptag">Firebase</span><span class="ptag">Google Maps</span></div>
+    </div>
+  </div>
+
+  <div class="pcard reveal" data-cat="web" style="--card-accent:var(--accent)" onclick="openLightbox('web2')">
+    <div class="pcard-visual" style="background:linear-gradient(135deg,#071218,#0e1f2a)">🏫</div>
+    <div class="pcard-overlay"><a class="overlay-link" href="#">View Project →</a></div>
+    <div class="pcard-info">
+      <div class="pcard-cat">Web Development</div>
+      <div class="pcard-title">Sunrise Academy — School Management Portal</div>
+      <div class="pcard-client">Client: Sunrise Academy</div>
+      <div class="pcard-tags"><span class="ptag">PHP</span><span class="ptag">Laravel</span><span class="ptag">MySQL</span></div>
+    </div>
+  </div>
+
+  <div class="pcard reveal" data-cat="it" style="--card-accent:#fbbf24" onclick="openLightbox('it1')">
+    <div class="pcard-visual" style="background:linear-gradient(135deg,#141008,#261f08)">📹</div>
+    <div class="pcard-overlay"><a class="overlay-link" href="#">View Project →</a></div>
+    <div class="pcard-info">
+      <div class="pcard-cat">IT &amp; CCTV</div>
+      <div class="pcard-title">Warehouse Security — 32-Camera CCTV Network</div>
+      <div class="pcard-client">Client: Jinja Logistics Park</div>
+      <div class="pcard-tags"><span class="ptag">Hikvision</span><span class="ptag">NVR</span><span class="ptag">Remote Access</span></div>
+    </div>
+  </div>
+
+  <div class="pcard reveal" data-cat="design" style="--card-accent:var(--accent2)" onclick="openLightbox('design2')">
+    <div class="pcard-visual" style="background:linear-gradient(135deg,#1a0a10,#2a0e18)">💄</div>
+    <div class="pcard-overlay"><a class="overlay-link" href="#">View Project →</a></div>
+    <div class="pcard-info">
+      <div class="pcard-cat">Branding &amp; Design</div>
+      <div class="pcard-title">Glow Beauty — Brand Identity &amp; Packaging</div>
+      <div class="pcard-client">Client: Glow Beauty UG</div>
+      <div class="pcard-tags"><span class="ptag">Logo</span><span class="ptag">Packaging</span><span class="ptag">Social Kit</span></div>
+    </div>
+  </div>
+
+  <div class="pcard wide reveal" data-cat="app" style="--card-accent:#a78bfa" onclick="openLightbox('app2')">
+    <div class="pcard-visual" style="background:linear-gradient(135deg,#0e0820,#180e35)">🏥</div>
+    <div class="pcard-overlay"><a class="overlay-link" href="#">View Project →</a></div>
+    <div class="pcard-info">
+      <div class="pcard-cat">Mobile App</div>
+      <div class="pcard-title">MediTrack — Patient Management &amp; Appointment App</div>
+      <div class="pcard-client">Client: Kampala Wellness Clinic</div>
+      <div class="pcard-tags"><span class="ptag">React Native</span><span class="ptag">Node.js</span><span class="ptag">PostgreSQL</span><span class="ptag">Push Notifications</span></div>
+    </div>
+  </div>
+
+  <div class="pcard reveal" data-cat="it" style="--card-accent:#fbbf24" onclick="openLightbox('it2')">
+    <div class="pcard-visual" style="background:linear-gradient(135deg,#101408,#1c2208)">🌐</div>
+    <div class="pcard-overlay"><a class="overlay-link" href="#">View Project →</a></div>
+    <div class="pcard-info">
+      <div class="pcard-cat">IT Infrastructure</div>
+      <div class="pcard-title">Entebbe Office — LAN, Wi-Fi &amp; Server Setup</div>
+      <div class="pcard-client">Client: Entebbe Business Hub</div>
+      <div class="pcard-tags"><span class="ptag">Cisco</span><span class="ptag">Ubiquiti</span><span class="ptag">Windows Server</span></div>
+    </div>
+  </div>
+
+  <div class="pcard reveal" data-cat="web" style="--card-accent:var(--accent)" onclick="openLightbox('web3')">
+    <div class="pcard-visual" style="background:linear-gradient(135deg,#061212,#0a1e1e)">🍽️</div>
+    <div class="pcard-overlay"><a class="overlay-link" href="#">View Project →</a></div>
+    <div class="pcard-info">
+      <div class="pcard-cat">Web Development</div>
+      <div class="pcard-title">Taste of Kampala — Restaurant &amp; Online Ordering</div>
+      <div class="pcard-client">Client: Taste of Kampala</div>
+      <div class="pcard-tags"><span class="ptag">Next.js</span><span class="ptag">Tailwind</span><span class="ptag">MTN MoMo</span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CASE STUDIES -->
+<div class="case-section">
+  <div class="section-label reveal">Deep Dives</div>
+  <div class="section-title reveal">Featured <em>Case Studies</em></div>
+  <div class="case-grid">
+    <div class="case-card reveal">
+      <div class="cc-header">
+        <div class="cc-icon">🛒</div>
+        <span class="cc-badge" style="background:rgba(0,212,255,.1);color:var(--accent)">Web Dev</span>
+      </div>
+      <div class="cc-body">
+        <h3>Kampala Retail — E-Commerce Overhaul</h3>
+        <p>The client had a dated WordPress site averaging 3-second load times and a 78% cart abandonment rate. We rebuilt from scratch on React + Node.js with integrated MTN MoMo and Airtel Money payments.</p>
+        <div class="cc-metrics">
+          <div><div class="metric-val">3.2×</div><div class="metric-label">Faster Load</div></div>
+          <div><div class="metric-val">-54%</div><div class="metric-label">Cart Abandonment</div></div>
+          <div><div class="metric-val">+210%</div><div class="metric-label">Monthly Revenue</div></div>
+        </div>
+        <div class="cc-tech">
+          <span class="tech-pill">React</span><span class="tech-pill">Node.js</span>
+          <span class="tech-pill">MySQL</span><span class="tech-pill">MTN MoMo API</span>
+          <span class="tech-pill">Vercel</span>
+        </div>
+      </div>
+    </div>
+    <div class="case-card reveal">
+      <div class="cc-header">
+        <div class="cc-icon">📱</div>
+        <span class="cc-badge" style="background:rgba(167,139,250,.1);color:#a78bfa">Mobile App</span>
+      </div>
+      <div class="cc-body">
+        <h3>RiderLink — Boda Dispatch Platform</h3>
+        <p>A Kampala boda-boda company needed to move from WhatsApp-based dispatching to a real-time app. We built dual apps — one for riders, one for customers — with live GPS and automated job assignment.</p>
+        <div class="cc-metrics">
+          <div><div class="metric-val">500+</div><div class="metric-label">Daily Riders</div></div>
+          <div><div class="metric-val">-70%</div><div class="metric-label">Dispatch Time</div></div>
+          <div><div class="metric-val">4.8★</div><div class="metric-label">Play Store Rating</div></div>
+        </div>
+        <div class="cc-tech">
+          <span class="tech-pill">Flutter</span><span class="tech-pill">Firebase</span>
+          <span class="tech-pill">Google Maps API</span><span class="tech-pill">FCM</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROCESS -->
+<div class="process-section">
+  <div class="section-label reveal">How We Work</div>
+  <div class="section-title reveal">Our <em>Process</em></div>
+  <div class="process-steps">
+    <div class="step reveal">
+      <div class="step-num">01</div>
+      <h4>Discovery</h4>
+      <p>We learn your goals, audience, and requirements through a thorough brief and consultation.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">02</div>
+      <h4>Strategy &amp; Design</h4>
+      <p>Wireframes, prototypes, and creative direction — all approved before a single line of code.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">03</div>
+      <h4>Build &amp; Test</h4>
+      <p>Development, QA, and rigorous testing across devices and edge cases.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">04</div>
+      <h4>Launch &amp; Support</h4>
+      <p>Smooth deployment and ongoing support — we're never just a vendor, we're a partner.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-band">
+  <div class="reveal">
+    <h2>Got a Project in Mind?</h2>
+    <p>Let's build something great together. Reach out for a free consultation.</p>
+    <div class="cta-actions">
+      <a class="btn-primary" href="ajm-tech.html#contact">Start a Project →</a>
+      <a class="btn-secondary" href="about.html">Learn About Us</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a class="logo" href="ajm-tech.html"><span>AJM</span>-TECH</a>
+      <p>Uganda's trusted technology partner for repairs, sales, design, and development.</p>
+      <div class="footer-socials">
+        <a class="social-btn" href="#">f</a><a class="social-btn" href="#">ig</a>
+        <a class="social-btn" href="#">w</a><a class="social-btn" href="#">𝕏</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Services</h5>
+      <ul>
+        <li><a href="#">Tech Repairs</a></li><li><a href="#">Tech Sales</a></li>
+        <li><a href="#">Graphics Design</a></li><li><a href="#">Web Development</a></li>
+        <li><a href="#">App Development</a></li><li><a href="#">IT Support</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="about.html">About Us</a></li><li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="blog.html">Blog</a></li><li><a href="#">Careers</a></li>
+        <li><a href="ajm-tech.html#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <ul>
+        <li><a href="#">📍 Kampala, Uganda</a></li>
+        <li><a href="tel:+256700000000">📞 +256 700 000 000</a></li>
+        <li><a href="mailto:info@ajm-tech.ug">✉️ info@ajm-tech.ug</a></li>
+        <li><a href="#">⏰ Mon–Sat, 8am–7pm</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 AJM-TECH. All rights reserved.</span>
+    <span>Designed &amp; Built by <a href="#">AJM-TECH</a></span>
+    <span><a href="#">Privacy Policy</a> · <a href="#">Terms</a></span>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <div class="lb-content">
+    <button class="lb-close" onclick="document.getElementById('lightbox').classList.remove('open')">✕</button>
+    <div id="lb-visual" class="lb-visual">🌐</div>
+    <div id="lb-title" class="lb-title">Project Title</div>
+    <div id="lb-meta" class="lb-meta">Category · Client</div>
+    <div id="lb-desc" class="lb-desc">Description goes here.</div>
+  </div>
+</div>
+
+<script>
+  const obs = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')}),{threshold:.1});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=`${(i%4)*.08}s`;obs.observe(el)});
+
+  function filterGrid(btn, cat) {
+    document.querySelectorAll('.pf-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.pcard').forEach(c=>{
+      c.style.opacity = (cat==='all'||c.dataset.cat===cat) ? '1' : '.2';
+      c.style.pointerEvents = (cat==='all'||c.dataset.cat===cat) ? '' : 'none';
+    });
+  }
+
+  const projects = {
+    web1:{icon:'🛒',title:'Kampala Retail — E-Commerce Platform',meta:'Web Development · Kampala Retail Group',desc:'Full-stack e-commerce platform with mobile payments, inventory management, and an admin dashboard. Built on React and Node.js for blazing-fast performance.'},
+    web2:{icon:'🏫',title:'Sunrise Academy — School Management Portal',meta:'Web Development · Sunrise Academy',desc:'A complete school management system with student records, fee tracking, timetables, teacher portals, and parent SMS notifications.'},
+    web3:{icon:'🍽️',title:'Taste of Kampala — Restaurant Site',meta:'Web Development · Taste of Kampala',desc:'Modern restaurant website with online menu, table reservations, and online ordering with MTN MoMo integration.'},
+    design1:{icon:'🎯',title:'NovaPay — FinTech Brand Identity',meta:'Branding & Design · NovaPay Uganda',desc:'Complete brand identity for a Ugandan fintech startup: logo system, color palette, typography, pitch deck templates, and a UI design kit.'},
+    design2:{icon:'💄',title:'Glow Beauty — Brand & Packaging',meta:'Branding & Design · Glow Beauty UG',desc:'Beauty brand identity from scratch including logo, packaging design for 12 SKUs, social media templates, and a full brand guidelines document.'},
+    app1:{icon:'📱',title:'RiderLink — Boda Dispatch App',meta:'Mobile App · RiderLink Ltd',desc:'Dual Flutter apps for riders and customers, with real-time GPS dispatch, automated job assignment, and MTN MoMo in-app payments.'},
+    app2:{icon:'🏥',title:'MediTrack — Patient Management App',meta:'Mobile App · Kampala Wellness Clinic',desc:'Healthcare app for patient records, appointment scheduling, prescription management, and doctor-patient messaging with end-to-end encryption.'},
+    it1:{icon:'📹',title:'Jinja Logistics — 32-Camera CCTV System',meta:'IT & CCTV · Jinja Logistics Park',desc:'Enterprise-grade CCTV installation across a 5-acre logistics park with NVR, remote mobile viewing, motion alerts, and 30-day cloud backup.'},
+    it2:{icon:'🌐',title:'Entebbe Business Hub — Network Setup',meta:'IT Infrastructure · Entebbe Business Hub',desc:'Full LAN/Wi-Fi setup for a 3-floor co-working space: structured cabling, Cisco switches, Ubiquiti access points, and a Windows Server file system.'},
+  };
+  function openLightbox(id) {
+    const p = projects[id]; if(!p) return;
+    document.getElementById('lb-visual').textContent = p.icon;
+    document.getElementById('lb-title').textContent = p.title;
+    document.getElementById('lb-meta').textContent = p.meta;
+    document.getElementById('lb-desc').textContent = p.desc;
+    document.getElementById('lightbox').classList.add('open');
+  }
+  function closeLightbox(e) {
+    if(e.target.id==='lightbox') document.getElementById('lightbox').classList.remove('open');
+  }
+</script>
+</body>
+</html>

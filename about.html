@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>About Us | AJM-TECH</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --bg:#080c10;--surface:#0e1318;--surface2:#131920;--border:#1e2a34;
+    --accent:#00d4ff;--accent2:#ff6b35;--accent3:#7cff6b;
+    --text:#e8edf2;--muted:#6b7c8d;
+    --heading:'Syne',sans-serif;--body:'DM Sans',sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.6;overflow-x:hidden}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 5vw;background:rgba(8,12,16,.85);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+  .logo{font-family:var(--heading);font-size:1.5rem;font-weight:800;letter-spacing:-.03em;color:var(--text);text-decoration:none}
+  .logo span{color:var(--accent)}
+  .nav-links{display:flex;gap:2rem;list-style:none}
+  .nav-links a{font-size:.9rem;font-weight:500;color:var(--muted);text-decoration:none;transition:color .2s;letter-spacing:.02em}
+  .nav-links a:hover{color:var(--text)}
+  .nav-links a.active{color:var(--accent)}
+  .nav-cta{background:var(--accent);color:#000;font-family:var(--heading);font-weight:700;font-size:.85rem;letter-spacing:.05em;padding:.55rem 1.4rem;border-radius:4px;text-decoration:none;transition:opacity .2s}
+  .nav-cta:hover{opacity:.85}
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+  .hamburger span{width:24px;height:2px;background:var(--text);display:block}
+
+  /* HERO */
+  .hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:8rem 5vw 5rem;overflow:hidden}
+  .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,212,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.03) 1px,transparent 1px);background-size:48px 48px}
+  .hero-glow{position:absolute;width:800px;height:600px;top:-200px;right:-200px;border-radius:50%;filter:blur(130px);background:radial-gradient(circle,rgba(0,212,255,.14) 0%,transparent 70%);z-index:0;animation:glow 7s ease-in-out infinite alternate}
+  .hero-glow2{position:absolute;width:500px;height:500px;bottom:0;left:-100px;border-radius:50%;filter:blur(120px);background:radial-gradient(circle,rgba(255,107,53,.1) 0%,transparent 70%);z-index:0;animation:glow 9s ease-in-out infinite alternate-reverse}
+  @keyframes glow{from{opacity:.6}to{opacity:1}}
+  .hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;width:100%}
+  .page-label{display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.22);color:var(--accent);font-size:.78rem;font-weight:600;padding:.35rem .9rem;border-radius:999px;margin-bottom:1.5rem;letter-spacing:.08em;text-transform:uppercase}
+  .hero-inner h1{font-family:var(--heading);font-size:clamp(2.4rem,5vw,4.2rem);font-weight:800;letter-spacing:-.03em;line-height:1.05;margin-bottom:1.2rem}
+  .hero-inner h1 em{font-style:normal;color:var(--accent)}
+  .hero-inner p{color:var(--muted);font-size:1.05rem;line-height:1.75;margin-bottom:2rem;max-width:480px}
+  .btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:#000;font-family:var(--heading);font-weight:700;font-size:.95rem;padding:.85rem 2rem;border-radius:5px;text-decoration:none;transition:transform .2s,box-shadow .2s;box-shadow:0 0 30px rgba(0,212,255,.3)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(0,212,255,.5)}
+  .btn-secondary{display:inline-flex;align-items:center;gap:.5rem;background:transparent;color:var(--text);border:1px solid var(--border);font-family:var(--heading);font-weight:600;font-size:.95rem;padding:.85rem 2rem;border-radius:5px;text-decoration:none;transition:border-color .2s,color .2s;margin-left:.8rem}
+  .btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+  .hero-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem;position:relative;overflow:hidden}
+  .hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+  .hc-title{font-family:var(--heading);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:1.5rem}
+  .hc-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.5rem}
+  .hc-stat-num{font-family:var(--heading);font-size:2.2rem;font-weight:800;color:var(--accent);line-height:1}
+  .hc-stat-label{font-size:.78rem;color:var(--muted);margin-top:.2rem}
+  .hc-divider{border:none;border-top:1px solid var(--border);margin:1.2rem 0}
+  .hc-badges{display:flex;flex-wrap:wrap;gap:.5rem}
+  .hc-badge{font-size:.72rem;padding:.3rem .8rem;border-radius:4px;font-weight:600;border:1px solid}
+  .hc-badge.blue{background:rgba(0,212,255,.1);color:var(--accent);border-color:rgba(0,212,255,.25)}
+  .hc-badge.orange{background:rgba(255,107,53,.1);color:var(--accent2);border-color:rgba(255,107,53,.25)}
+  .hc-badge.green{background:rgba(124,255,107,.1);color:var(--accent3);border-color:rgba(124,255,107,.25)}
+  .hc-badge.purple{background:rgba(167,139,250,.1);color:#a78bfa;border-color:rgba(167,139,250,.25)}
+
+  /* STORY */
+  .story-section{padding:6rem 5vw;border-top:1px solid var(--border)}
+  .story-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;margin-top:3rem}
+  .story-text p{color:var(--muted);font-size:.95rem;line-height:1.8;margin-bottom:1.2rem}
+  .story-text p strong{color:var(--text)}
+  .timeline{display:flex;flex-direction:column;gap:0}
+  .tl-item{display:flex;gap:1.5rem;padding-bottom:2rem;position:relative}
+  .tl-item::before{content:'';position:absolute;left:19px;top:40px;bottom:0;width:1px;background:var(--border)}
+  .tl-item:last-child::before{display:none}
+  .tl-dot{width:40px;height:40px;border-radius:50%;border:2px solid var(--accent);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;z-index:1;transition:background .3s}
+  .tl-item:hover .tl-dot{background:rgba(0,212,255,.1)}
+  .tl-year{font-family:var(--heading);font-size:.78rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
+  .tl-title{font-family:var(--heading);font-size:1rem;font-weight:700;margin-bottom:.3rem}
+  .tl-desc{font-size:.85rem;color:var(--muted);line-height:1.6}
+  .section-label{font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.8rem}
+  .section-title{font-family:var(--heading);font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:1rem}
+  .section-title em{font-style:normal;color:var(--accent)}
+  .section-sub{color:var(--muted);font-size:1rem;max-width:520px}
+
+  /* VALUES */
+  .values-section{padding:6rem 5vw;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+  .value-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:2rem;transition:border-color .25s,transform .25s;position:relative;overflow:hidden}
+  .value-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--vc-color,var(--accent));opacity:0;transition:opacity .3s}
+  .value-card:hover{border-color:var(--vc-color,var(--accent));transform:translateY(-4px)}
+  .value-card:hover::after{opacity:1}
+  .vc-icon{font-size:2rem;margin-bottom:1.2rem}
+  .value-card h3{font-family:var(--heading);font-size:1.05rem;font-weight:800;margin-bottom:.6rem}
+  .value-card p{font-size:.87rem;color:var(--muted);line-height:1.7}
+
+  /* TEAM */
+  .team-section{padding:6rem 5vw}
+  .team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:3rem}
+  .team-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color .25s,transform .25s;text-align:center}
+  .team-card:hover{border-color:var(--accent);transform:translateY(-4px)}
+  .team-photo{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:3.5rem;background:var(--surface2);position:relative;overflow:hidden}
+  .team-photo::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,212,255,.06),rgba(255,107,53,.04))}
+  .team-body{padding:1.4rem}
+  .team-name{font-family:var(--heading);font-size:1rem;font-weight:800;margin-bottom:.25rem}
+  .team-role{font-size:.8rem;color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.6rem}
+  .team-bio{font-size:.8rem;color:var(--muted);line-height:1.6;margin-bottom:1rem}
+  .team-socials{display:flex;justify-content:center;gap:.5rem}
+  .ts-btn{width:30px;height:30px;border-radius:6px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.75rem;text-decoration:none;color:var(--muted);transition:all .2s}
+  .ts-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* TECH STACK */
+  .stack-section{padding:6rem 5vw;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .stack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:1rem;margin-top:3rem}
+  .stack-item{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:1.2rem .8rem;text-align:center;transition:border-color .2s,transform .2s}
+  .stack-item:hover{border-color:var(--accent);transform:translateY(-3px)}
+  .si-icon{font-size:1.8rem;margin-bottom:.5rem}
+  .si-name{font-size:.72rem;color:var(--muted);font-weight:500}
+
+  /* NUMBERS */
+  .numbers-section{padding:6rem 5vw;text-align:center}
+  .numbers-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;margin-top:3rem}
+  .number-card{padding:2rem 1rem}
+  .nc-num{font-family:var(--heading);font-size:3.5rem;font-weight:800;color:var(--accent);line-height:1;margin-bottom:.5rem}
+  .nc-label{font-size:.9rem;color:var(--muted)}
+
+  /* AWARDS / TRUST */
+  .trust-section{padding:4rem 5vw;border-top:1px solid var(--border)}
+  .trust-inner{text-align:center}
+  .trust-title{font-size:.8rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:2rem}
+  .trust-logos{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:2.5rem}
+  .trust-logo{font-family:var(--heading);font-size:1rem;font-weight:700;color:var(--border);letter-spacing:.05em;transition:color .2s;text-transform:uppercase}
+  .trust-logo:hover{color:var(--muted)}
+
+  /* CTA */
+  .cta-band{background:linear-gradient(135deg,rgba(0,212,255,.08) 0%,rgba(255,107,53,.06) 100%);border-top:1px solid var(--border);text-align:center;padding:5rem 5vw}
+  .cta-band h2{font-family:var(--heading);font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;letter-spacing:-.03em;margin-bottom:1rem}
+  .cta-band p{color:var(--muted);margin-bottom:2rem;font-size:1.05rem}
+  .cta-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+  /* FOOTER */
+  footer{background:var(--surface);border-top:1px solid var(--border);padding:4rem 5vw 2rem}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+  .footer-brand p{color:var(--muted);font-size:.88rem;line-height:1.7;margin:1rem 0;max-width:280px}
+  .footer-socials{display:flex;gap:.8rem}
+  .social-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.85rem;text-decoration:none;color:var(--muted);transition:all .2s}
+  .social-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .footer-col h5{font-family:var(--heading);font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:1.2rem}
+  .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+  .footer-col a{font-size:.88rem;color:var(--muted);text-decoration:none;transition:color .2s}
+  .footer-col a:hover{color:var(--text)}
+  .footer-bottom{border-top:1px solid var(--border);padding-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:.82rem;color:var(--muted)}
+  .footer-bottom a{color:var(--accent);text-decoration:none}
+
+  /* REVEAL */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.visible{opacity:1;transform:none}
+
+  @media(max-width:960px){
+    .hero-inner{grid-template-columns:1fr}
+    .hero-card{display:none}
+    .story-grid{grid-template-columns:1fr}
+    .values-grid{grid-template-columns:1fr 1fr}
+    .team-grid{grid-template-columns:repeat(2,1fr)}
+    .numbers-grid{grid-template-columns:repeat(2,1fr)}
+    .footer-grid{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:600px){
+    .nav-links,.nav-cta{display:none}
+    .hamburger{display:flex}
+    .values-grid{grid-template-columns:1fr}
+    .team-grid{grid-template-columns:1fr 1fr}
+    .numbers-grid{grid-template-columns:1fr 1fr}
+    .stack-grid{grid-template-columns:repeat(auto-fill,minmax(80px,1fr))}
+    .footer-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="ajm-tech.html"><span>AJM</span>-TECH</a>
+  <ul class="nav-links">
+    <li><a href="ajm-tech.html#services">Services</a></li>
+    <li><a href="portfolio.html">Portfolio</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="ajm-tech.html#contact">Contact</a></li>
+  </ul>
+  <a class="nav-cta" href="ajm-tech.html#contact">Get a Quote →</a>
+  <div class="hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="page-label">🏢 Our Story</div>
+      <h1>Uganda's Most<br>Trusted <em>Tech Team</em></h1>
+      <p>AJM-TECH was born from a simple belief: that every Ugandan business and individual deserves world-class technology services at fair, honest prices. Six years later, that belief is still everything we do.</p>
+      <div>
+        <a class="btn-primary" href="#team">Meet the Team →</a>
+        <a class="btn-secondary" href="portfolio.html">See Our Work</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hc-title">📊 AJM-TECH At a Glance</div>
+      <div class="hc-stat-grid">
+        <div><div class="hc-stat-num">2019</div><div class="hc-stat-label">Founded</div></div>
+        <div><div class="hc-stat-num">12+</div><div class="hc-stat-label">Team Members</div></div>
+        <div><div class="hc-stat-num">300+</div><div class="hc-stat-label">Projects Done</div></div>
+        <div><div class="hc-stat-num">98%</div><div class="hc-stat-label">Satisfaction Rate</div></div>
+      </div>
+      <hr class="hc-divider"/>
+      <div class="hc-badges">
+        <span class="hc-badge blue">Tech Repairs</span>
+        <span class="hc-badge orange">Branding</span>
+        <span class="hc-badge green">Web Dev</span>
+        <span class="hc-badge purple">Mobile Apps</span>
+        <span class="hc-badge blue">IT Support</span>
+        <span class="hc-badge orange">CCTV</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="story-section">
+  <div class="story-grid">
+    <div class="story-text reveal">
+      <div class="section-label">How It All Started</div>
+      <div class="section-title" style="font-size:clamp(1.5rem,2.5vw,2rem);margin-bottom:1.5rem">From a Single Repair<br>Bench to a <em>Full Studio</em></div>
+      <p>AJM-TECH started in 2019 in a small workshop in Kampala. Our founder, a passionate engineer with a decade of experience in device repair and software, noticed a glaring gap: Ugandans were paying premium prices for mediocre tech services — or travelling far for basic repairs.</p>
+      <p>We began with phone and laptop repairs, quickly building a reputation for <strong>honesty, speed, and quality work</strong>. Word spread. Clients began asking for websites. Then logos. Then mobile apps. With each new request, we grew the team and the services.</p>
+      <p>Today, AJM-TECH is a <strong>full-spectrum technology company</strong> — a place where a market vendor can get their phone screen fixed, and a startup can build their entire digital identity, all under one roof, all in Kampala.</p>
+    </div>
+    <div class="reveal">
+      <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:1.5rem">Our Journey</div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot">🔧</div>
+          <div>
+            <div class="tl-year">2019 — The Beginning</div>
+            <div class="tl-title">First Repair Bay Opens</div>
+            <div class="tl-desc">Started with device repairs — phones, laptops, tablets — out of a workshop in central Kampala. First month: 40 repairs. Word-of-mouth spread fast.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">🎨</div>
+          <div>
+            <div class="tl-year">2020 — Expanding Services</div>
+            <div class="tl-title">Graphics & Web Design Added</div>
+            <div class="tl-desc">Client demand pushed us into branding and web development. Hired our first designer and launched the digital services arm.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">📱</div>
+          <div>
+            <div class="tl-year">2021 — Going Mobile</div>
+            <div class="tl-title">App Development Division</div>
+            <div class="tl-desc">Launched our mobile app development team. First major project: a boda-boda dispatch app now used by 500+ daily riders.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">🌐</div>
+          <div>
+            <div class="tl-year">2023 — IT Infrastructure</div>
+            <div class="tl-title">Full IT & CCTV Services</div>
+            <div class="tl-desc">Added enterprise IT support, structured cabling, and CCTV installation. Signed first corporate contract with a Kampala logistics firm.</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">🚀</div>
+          <div>
+            <div class="tl-year">2025–26 — Today</div>
+            <div class="tl-title">300+ Projects & Growing</div>
+            <div class="tl-desc">12-person team, new expanded service bay, and plans to open a second branch. Still the same mission: world-class tech, Ugandan prices.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="values-section">
+  <div style="text-align:center;max-width:600px;margin:0 auto 0" class="reveal">
+    <div class="section-label">What Drives Us</div>
+    <div class="section-title">Our Core <em>Values</em></div>
+    <p style="color:var(--muted);font-size:1rem;line-height:1.7">Every decision we make, every project we take on, every hire we make — it all comes back to these.</p>
+  </div>
+  <div class="values-grid">
+    <div class="value-card reveal" style="--vc-color:var(--accent)">
+      <div class="vc-icon">🏆</div>
+      <h3>Quality Without Compromise</h3>
+      <p>We use genuine parts. We write clean code. We deliver designs that last. There are no shortcuts here — only results our clients can be proud of.</p>
+    </div>
+    <div class="value-card reveal" style="--vc-color:var(--accent2)">
+      <div class="vc-icon">🤝</div>
+      <h3>Radical Honesty</h3>
+      <p>If your device can't be fixed, we'll tell you. If your budget won't stretch to your dream, we'll give you a realistic plan. No inflated quotes, no runaround.</p>
+    </div>
+    <div class="value-card reveal" style="--vc-color:var(--accent3)">
+      <div class="vc-icon">⚡</div>
+      <h3>Speed That Doesn't Sacrifice</h3>
+      <p>We know downtime costs money. We hustle hard to turn projects around fast — but never so fast that quality slips.</p>
+    </div>
+    <div class="value-card reveal" style="--vc-color:#a78bfa">
+      <div class="vc-icon">🌍</div>
+      <h3>Local Impact, Global Standards</h3>
+      <p>We're proud to be Ugandan. We apply the same standards you'd find in London or Nairobi — but we understand Kampala's unique needs and rhythms.</p>
+    </div>
+    <div class="value-card reveal" style="--vc-color:#fbbf24">
+      <div class="vc-icon">🔄</div>
+      <h3>Long-Term Partnerships</h3>
+      <p>We're not here for a single transaction. Our best client relationships have lasted years. We check in, we support, we grow with you.</p>
+    </div>
+    <div class="value-card reveal" style="--vc-color:var(--accent)">
+      <div class="vc-icon">💡</div>
+      <h3>Continuous Learning</h3>
+      <p>Tech evolves daily. Our team dedicates time every week to training and upskilling so you always get the most current, best-practice solutions.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team-section" id="team">
+  <div style="text-align:center;max-width:600px;margin:0 auto 0" class="reveal">
+    <div class="section-label">The People</div>
+    <div class="section-title">Meet the <em>AJM-TECH Team</em></div>
+    <p style="color:var(--muted);font-size:1rem;line-height:1.7">A tight-knit crew of engineers, designers, and problem-solvers who love what they do.</p>
+  </div>
+  <div class="team-grid">
+    <div class="team-card reveal">
+      <div class="team-photo">👨🏾‍💻</div>
+      <div class="team-body">
+        <div class="team-name">Abdul J. Mugisha</div>
+        <div class="team-role">Founder & Lead Engineer</div>
+        <div class="team-bio">10+ years in hardware repair and software engineering. Drives AJM-TECH's vision of accessible, world-class tech.</div>
+        <div class="team-socials">
+          <a class="ts-btn" href="#">in</a><a class="ts-btn" href="#">𝕏</a><a class="ts-btn" href="#">✉️</a>
+        </div>
+      </div>
+    </div>
+    <div class="team-card reveal">
+      <div class="team-photo">👩🏾‍🎨</div>
+      <div class="team-body">
+        <div class="team-name">Joan Nakato</div>
+        <div class="team-role">Creative Director</div>
+        <div class="team-bio">Brand identity and UI/UX specialist. Has designed over 100 brand identities across East Africa.</div>
+        <div class="team-socials">
+          <a class="ts-btn" href="#">in</a><a class="ts-btn" href="#">ig</a><a class="ts-btn" href="#">✉️</a>
+        </div>
+      </div>
+    </div>
+    <div class="team-card reveal">
+      <div class="team-photo">👨🏾‍💼</div>
+      <div class="team-body">
+        <div class="team-name">Mark Ssemwogerere</div>
+        <div class="team-role">Head of Development</div>
+        <div class="team-bio">Full-stack developer and architect. Leads all web and mobile app projects from design to deployment.</div>
+        <div class="team-socials">
+          <a class="ts-btn" href="#">in</a><a class="ts-btn" href="#">gh</a><a class="ts-btn" href="#">✉️</a>
+        </div>
+      </div>
+    </div>
+    <div class="team-card reveal">
+      <div class="team-photo">👩🏾‍🔧</div>
+      <div class="team-body">
+        <div class="team-name">Sarah Acan</div>
+        <div class="team-role">Senior Repair Technician</div>
+        <div class="team-bio">Certified device repair specialist with deep expertise in Apple, Samsung, and laptop motherboard-level repairs.</div>
+        <div class="team-socials">
+          <a class="ts-btn" href="#">in</a><a class="ts-btn" href="#">𝕏</a><a class="ts-btn" href="#">✉️</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section class="stack-section">
+  <div style="text-align:center;max-width:600px;margin:0 auto 0" class="reveal">
+    <div class="section-label">Our Toolkit</div>
+    <div class="section-title">Technologies We <em>Work With</em></div>
+  </div>
+  <div class="stack-grid">
+    <div class="stack-item reveal"><div class="si-icon">⚛️</div><div class="si-name">React</div></div>
+    <div class="stack-item reveal"><div class="si-icon">🔷</div><div class="si-name">Flutter</div></div>
+    <div class="stack-item reveal"><div class="si-icon">🟢</div><div class="si-name">Node.js</div></div>
+    <div class="stack-item reveal"><div class="si-icon">🐘</div><div class="si-name">PHP/Laravel</div></div>
+    <div class="stack-item reveal"><div class="si-icon">🗄️</div><div class="si-name">MySQL</div></div>
+    <div class="stack-item reveal"><div class="si-icon">🔥</div><div class="si-name">Firebase</div></div>
+    <div class="stack-item reveal"><div class="si-icon">🎨</div><div class="si-name">Figma</div></div>
+    <div class="stack-item reveal"><div class="si-icon">🖌️</div><div class="si-name">Illustrator</div></div>
+    <div class="stack-item reveal"><div class="si-icon">📸</div><div class="si-name">Photoshop</div></div>
+    <div class="stack-item reveal"><div class="si-icon">▲</div><div class="si-name">Next.js</div></div>
+    <div class="stack-item reveal"><div class="si-icon">🐍</div><div class="si-name">Python</div></div>
+    <div class="stack-item reveal"><div class="si-icon">☁️</div><div class="si-name">AWS</div></div>
+  </div>
+</section>
+
+<!-- NUMBERS -->
+<section class="numbers-section">
+  <div class="section-label reveal">By the Numbers</div>
+  <div class="section-title reveal">Six Years of <em>Real Results</em></div>
+  <div class="numbers-grid">
+    <div class="number-card reveal"><div class="nc-num">2,500+</div><div class="nc-label">Devices Repaired</div></div>
+    <div class="number-card reveal"><div class="nc-num">300+</div><div class="nc-label">Projects Delivered</div></div>
+    <div class="number-card reveal"><div class="nc-num">150+</div><div class="nc-label">Happy Businesses</div></div>
+    <div class="number-card reveal"><div class="nc-num">98%</div><div class="nc-label">Client Satisfaction</div></div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="trust-section">
+  <div class="trust-inner">
+    <div class="trust-title">Trusted by businesses across Uganda</div>
+    <div class="trust-logos">
+      <span class="trust-logo">Kampala Retail</span>
+      <span class="trust-logo">NovaPay UG</span>
+      <span class="trust-logo">Sunrise Academy</span>
+      <span class="trust-logo">RiderLink</span>
+      <span class="trust-logo">Glow Beauty</span>
+      <span class="trust-logo">Jinja Logistics</span>
+      <span class="trust-logo">Entebbe Hub</span>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-band">
+  <div class="reveal">
+    <h2>Ready to Work with Us?</h2>
+    <p>Whether it's a repair, a rebrand, or a full digital build — let's talk.</p>
+    <div class="cta-actions">
+      <a class="btn-primary" href="ajm-tech.html#contact">Contact Us Today →</a>
+      <a class="btn-secondary" href="portfolio.html">See Our Portfolio</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a class="logo" href="ajm-tech.html"><span>AJM</span>-TECH</a>
+      <p>Uganda's trusted technology partner for repairs, sales, design, and development.</p>
+      <div class="footer-socials">
+        <a class="social-btn" href="#">f</a><a class="social-btn" href="#">ig</a>
+        <a class="social-btn" href="#">w</a><a class="social-btn" href="#">𝕏</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Services</h5>
+      <ul>
+        <li><a href="#">Tech Repairs</a></li><li><a href="#">Tech Sales</a></li>
+        <li><a href="#">Graphics Design</a></li><li><a href="#">Web Development</a></li>
+        <li><a href="#">App Development</a></li><li><a href="#">IT Support</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="about.html">About Us</a></li><li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="blog.html">Blog</a></li><li><a href="#">Careers</a></li>
+        <li><a href="ajm-tech.html#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <ul>
+        <li><a href="#">📍 Kampala, Uganda</a></li>
+        <li><a href="tel:+256700000000">📞 +256 700 000 000</a></li>
+        <li><a href="mailto:info@ajm-tech.ug">✉️ info@ajm-tech.ug</a></li>
+        <li><a href="#">⏰ Mon–Sat, 8am–7pm</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 AJM-TECH. All rights reserved.</span>
+    <span>Designed &amp; Built by <a href="#">AJM-TECH</a></span>
+    <span><a href="#">Privacy Policy</a> · <a href="#">Terms</a></span>
+  </div>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')}),{threshold:.1});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=`${(i%5)*.08}s`;obs.observe(el)});
+</script>
+</body>
+</html>
